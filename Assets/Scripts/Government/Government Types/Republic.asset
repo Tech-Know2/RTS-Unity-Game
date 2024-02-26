@@ -1,0 +1,37 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54b069a80681dfc41b6132730d2e0ef3, type: 3}
+  m_Name: Republic
+  m_EditorClassIdentifier: 
+  governmentName: Republic
+  governmentDescription: A mighty name for a government that is governed by the few
+    and in charge of the many.
+  settlement: 1
+  agrarian: -5
+  military: 5
+  industrial: 2
+  academicAndReligious: 2
+  naval: 1
+  transportationAndEconomy: 1
+  defense: -2
+  scouting: 1
+  mediaAndSocial: 2
+  democraticWarSupport: 0.5
+  republicWarSupport: 1
+  theocracyWarSupport: 1.5
+  fascistWarSupport: 1
+  communistWarSupport: 1
+  monarchyWarSupport: 1
+  oligarchyWarSupport: 1.5
+  domesticReligiousSpeedModifier: 1.5
+  empireLoyaltyModifier: 1
+  wholeBoardReligiousSpeedModifier: 1
