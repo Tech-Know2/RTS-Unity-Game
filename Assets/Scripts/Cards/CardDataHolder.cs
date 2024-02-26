@@ -8,4 +8,14 @@ public class CardDataHolder : MonoBehaviour
 {
     public Card attachedCard;
     public TextMeshProUGUI cardTitle, cardCategory, cardEra, cardDescription;
+
+    public Card GetAttachedCard()
+    {
+        if(attachedCard != null)
+        {
+            return attachedCard;
+        }
+
+        return null;
+    }
 }

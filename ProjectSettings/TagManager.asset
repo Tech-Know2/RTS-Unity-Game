@@ -13,6 +13,7 @@ TagManager:
   - Client
   - Game Manager
   - Map Manager
+  - Card Slot
   layers:
   - Default
   - TransparentFX
