@@ -27,6 +27,8 @@ public class Religion : ScriptableObject
     public float diplomacyFavorRate; //How much other empires like you, effects war suport status
 
     //Moral and Loyalty
+    public bool canDedicate;
+    public bool dedicationStatusNotSet = true;
     public bool canStableDedicate; //Get stability in that city
     public bool canEconomicDedicate; //Get gold in that city
     public bool canHarvestDedicate; //Get food in that city
@@ -37,7 +39,6 @@ public class Religion : ScriptableObject
 
     //Conquest and Conversions
     public bool friendlyReligion;
-    public bool dedicatedReligion;
     public float conversionSpeed;
     public float alternateReligonConversionSpeed;
 
@@ -47,11 +48,12 @@ public class Religion : ScriptableObject
     public float holyWarEducationCost;
 
     //Suzerain functions
-    public bool canReligiousSuzerain; //Makes empire under control only have tis religion, and no others. Gets all suzerian buffs
+    public bool canReligiousSuzerain; //Allows you to access these other suzerains
+    public bool suzerainStatusNotSet = true;
     public bool canEconomicSuzerain; //Makes some gold off of religious buildings in citys with this religion as dominant
     public bool canAcademicSuzerain; //Makes some tech points off of religious buildings in citys with this religion as dominant
-    public bool canPoliticallySuzerain; //Makes rallying war support against this religion difficult if declaring war against dominant religion creator
-    public int suzerainEffectModifier;
+    public bool canPoliticallySuzerain; //Allows you to decrease the war support other empires have against you
+    public float suzerainEffectModifier = 0;
 
     //Religious/Econmic Income
     public float churchIncomeModifier;

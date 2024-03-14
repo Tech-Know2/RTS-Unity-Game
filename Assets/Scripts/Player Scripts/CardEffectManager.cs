@@ -6,6 +6,7 @@ public class CardEffectManager : MonoBehaviour
 {
     //Script Connections
     public Player playerScript;
+    public ReligionEffectManager religionEffectManager;
 
     //Effect Lists
     private List<EffectManagerList> singleUseCards = new List<EffectManagerList>();
@@ -153,7 +154,11 @@ public class CardEffectManager : MonoBehaviour
     //Create A religion
     public void CreateAReligion()
     {
-        Religion newReligion = new Religion();
+        Religion religion = new Religion();
+
+        Religion newReligion = religionEffectManager.CreateAReligion(religion);
+
+        playerScript.createdAReligion = true;
 
         //Assign the religion to the player's empire based on the tile the card was played on
     }
@@ -275,68 +280,122 @@ public class CardEffectManager : MonoBehaviour
     //Manage Religious Effects
     public void ManageReligiousEffects(RelgiousEffectsList effect)
     {
-        if(effect.isDedication == true)
+        if(effect.isPlayersReligion == true)
         {
-            DedicationManager(effect);
+            effect.religion = religionEffectManager.playerReligion;
 
-        } else if (effect.enablesSuzerain == true)
-        {
-            SuzerainEffectManager(effect);
+            if(effect.isDedication == true && religionEffectManager.CanDedicate() == true)
+            {
+                DedicationManager(effect);
 
-        } else if (effect.needsModifierSetup)
-        {
-            modifierSetup();
+            } else if (effect.enablesSuzerain == true)
+            {
+                SuzerainTypeController(effect);
 
-        } else if (effect.religiousEffect == "Mono or Poly")
-        {
-            MonoOrPoly(effect);
+            } else if (effect.suzerainEffect == true)
+            {
+                SuzerainEffectManager(effect);
+                
+            }else if (effect.needsModifierSetup)
+            {
+                //Do later
 
-        } else if (effect.religiousEffect == "Educated Freedoms")
-        {
-            EducatedFreedoms(effect);
-            
-        } else if (effect.religiousEffect == "Religious Freedoms")
-        {
-            ReligousFreedoms(effect);
-            
-        } else if (effect.religiousEffect == "Holy War")
-        {
-            HolyWar(effect);
-            
-        } else if (effect.religiousEffect == "Economic Yield")
-        {
-            EconomicYield(effect);
-            
-        } else if (effect.religiousEffect == "Religious Expansion")
-        {
-            ReligiousExpansion(effect);
-            
-        } else if (effect.religiousEffect == "Religious Safety")
-        {
-            ReligiousSafety(effect);
-            
+            } else if (effect.religiousEffect == "Mono or Poly" && religionEffectManager.CanBecomeGods() == true)
+            {
+                MonoOrPoly(effect);
+
+            } else if (effect.religiousEffect == "Educated Freedoms")
+            {
+                EducatedFreedoms(effect);
+                
+            } else if (effect.religiousEffect == "Religious Freedoms")
+            {
+                ReligousFreedoms(effect);
+                
+            } else if (effect.religiousEffect == "Holy War")
+            {
+                HolyWar(effect);
+                
+            } else if (effect.religiousEffect == "Economic Yield")
+            {
+                EconomicYield(effect);
+                
+            } else if (effect.religiousEffect == "Religious Expansion")
+            {
+                ReligiousExpansion(effect);
+                
+            } else if (effect.religiousEffect == "Religious Safety")
+            {
+                ReligiousSafety(effect);
+            }
         }
+
+        
     }
 
-    public void SuzerainEffectManager(RelgiousEffectsList effect)
+    public void SuzerainTypeController(RelgiousEffectsList effect)
     {
         Religion religion = effect.religion;
 
         if(effect.religiousEffect == "Allow Religious Suzerain")
         {
-            religion.canReligiousSuzerain = true;
+            if(RNG() == true && religionEffectManager.CanBecomeASuzerain() == true)
+            {
+                religionEffectManager.playerReligion.canReligiousSuzerain = true;
+                SetUpSuzerainEffectModifier();
 
-        } else if (effect.religiousEffect == "Allow Economic Suzerain")
-        {
-            religion.canEconomicSuzerain = true;
+            } else 
+            {
+                religionEffectManager.playerReligion.canReligiousSuzerain = false;
+            }
+            
 
-        } else if (effect.religiousEffect == "Allow Academic Suzerain")
+        } else if (effect.religiousEffect == "Allow Economic Suzerain" && religionEffectManager.CanDoSuzerains() == true)
         {
-            religion.canAcademicSuzerain = true;
+            if(RNG() == true)
+            {
+                religionEffectManager.playerReligion.canEconomicSuzerain = true;
 
-        } else if (effect.religiousEffect == "Allow Politcal Suzerain")
+            } else 
+            {
+                religionEffectManager.playerReligion.canEconomicSuzerain = false;
+            }
+
+        } else if (effect.religiousEffect == "Allow Academic Suzerain" && religionEffectManager.CanDoSuzerains() == true)
         {
-            religion.canPoliticallySuzerain = true;
+            if(RNG() == true)
+            {
+                religionEffectManager.playerReligion.canAcademicSuzerain = true;
+            } else 
+            {
+                religionEffectManager.playerReligion.canAcademicSuzerain = false;
+            }
+
+        } else if (effect.religiousEffect == "Allow Politcal Suzerain" && religionEffectManager.CanDoSuzerains() == true)
+        {
+            if(RNG() == true)
+            {
+                religionEffectManager.playerReligion.canPoliticallySuzerain = true;
+            } else 
+            {
+                religionEffectManager.playerReligion.canPoliticallySuzerain = false;
+            }            
+        }
+    }
+
+    public void SuzerainEffectManager(RelgiousEffectsList effect)
+    {
+        if(effect.suzerainEffectType == "Academic")
+        {
+            //Effects here
+
+        } else if (effect.suzerainEffectType == "Economic")
+        {
+            //Effects here
+
+        } else if (effect.suzerainEffectType == "Political")
+        {
+            //Effects here
         }
     }
 
@@ -373,12 +432,12 @@ public class CardEffectManager : MonoBehaviour
     {
         Religion religion = effect.religion;
 
-        if(RNG() == true)
+        if(RNG() == true) //Mono
         {
             religion.monotheism = true;
             religion.polytheism = false;
 
-        } else
+        } else //Poly
         {
             religion.polytheism = true;
             religion.monotheism = false;
@@ -441,9 +500,11 @@ public class CardEffectManager : MonoBehaviour
         return rng < 5;
     }
 
-    public int modifierSetup()
+    public void SetUpSuzerainEffectModifier()
     {
-        //work on later
-        return 1;
+        if(religionEffectManager.playerReligion.suzerainEffectModifier == 0)
+        {
+            religionEffectManager.suzerainEffectModifierCalculator();
+        }
     }
 }

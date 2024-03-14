@@ -71,6 +71,8 @@ public class TechDisplayController : MonoBehaviour
             //Modify has been researched
             hasBeenResearched = true;
 
+            uiController.notificationController.CreateNotification("Tech Researched", buttonTech.techName + " has been researched in the tech tree");
+
         } else if (uiController != null && uiController.gameManagerScript.playerTechPoints > 0 && previousTechController.hasBeenResearched == true)
         {
             foreach (Card card in buttonTech.techCards)
@@ -86,9 +88,13 @@ public class TechDisplayController : MonoBehaviour
             //Modify has been researched
             hasBeenResearched = true;
 
+            uiController.notificationController.CreateNotification("Tech Researched", buttonTech.techName + " has been researched in the tech tree");
+
         } else 
         {
             Debug.Log("Cant research it yet");
+
+            uiController.notificationController.CreateNotification("Research Update", " You are unable to research the " + buttonTech.techName + " tech just yet.");
         }
     }
 }

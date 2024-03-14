@@ -14,6 +14,7 @@ public class UIController : MonoBehaviour
     public GameObject managerObject;
     public GameManager gameManagerScript;
     public CardDealer dealer;
+    public NotificationController notificationController;
 
     //Client vars
     private bool playerConnected = false;
@@ -29,23 +30,47 @@ public class UIController : MonoBehaviour
         this.dealer = dealerScript;
     }
 
+    public Player playerLink()
+    {
+        if(playerScript != null)
+        {
+            return playerScript;
+
+        } else 
+        {
+            return null;
+        }
+    }
+
     public void DealCard()
     {
-        if(gameManagerScript.playerGold >= 50 && GetOpenSlot() != -1)
+        if(playerScript.playerTechs.Count >= 1)
         {
-            //Remove the gold from player balance
-            gameManagerScript.playerGold -= 50;
+            if(gameManagerScript.playerGold >= 50 && GetOpenSlot() != -1)
+            {
+                //Remove the gold from player balance
+                gameManagerScript.playerGold -= 50;
 
-            //Call the dealer to get a card for the player
-            playerScript.GetCards();
+                //Call the dealer to get a card for the player
+                playerScript.GetCards();
 
-        } else if (gameManagerScript.playerGold < 50)
+            } else if (gameManagerScript.playerGold < 50)
+            {
+                Debug.Log("Not Enough Gold");
+                
+                notificationController.CreateNotification("Can't Deal", "You do not have enough gold to be dealt a new card.");
+
+            } else if (GetOpenSlot() == -1)
+            {
+                Debug.Log("No Space");
+
+                notificationController.CreateNotification("Can't Deal", "Not enough space in your hand. Please clear some cards before getting new ones.");
+            }
+        } else 
         {
-            Debug.Log("Not Enough Gold");
+            Debug.Log("You need to research something first");
 
-        } else if (GetOpenSlot() == -1)
-        {
-            Debug.Log("No Space");
+            notificationController.CreateNotification("Can't Deal", "In order to get a card you must research something first.");
         }
     }
 

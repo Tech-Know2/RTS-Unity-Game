@@ -15,10 +15,10 @@ GameObject:
   - component: {fileID: -8207881799818019171}
   - component: {fileID: -7064104150945172825}
   - component: {fileID: -4904186202241250128}
-  - component: {fileID: 6615584646330148248}
   - component: {fileID: -1668363862658406223}
   - component: {fileID: 4382083402972015725}
   - component: {fileID: -1957080114997919942}
+  - component: {fileID: 7962230793042904001}
   m_Layer: 0
   m_Name: Client
   m_TagString: Client
@@ -62,7 +62,7 @@ MonoBehaviour:
   <ParentNetworkObject>k__BackingField: {fileID: 0}
   <ChildNetworkObjects>k__BackingField: []
   SerializedTransformProperties:
-    Position: {x: 0, y: 10, z: 0}
+    Position: {x: 0, y: 12, z: 0}
     Rotation: {x: 0, y: 0, z: 0, w: 1}
     LocalScale: {x: 1, y: 1, z: 1}
   _isNetworked: 1
@@ -132,15 +132,14 @@ MonoBehaviour:
   player: {fileID: 0}
   UIObject: {fileID: 0}
   UIController: {fileID: 0}
-  gameManagerObject: {fileID: 0}
   cardDealer: {fileID: -7064104150945172825}
   gameManager: {fileID: 0}
   mapObject: {fileID: 0}
-  cardPlacer: {fileID: 6615584646330148248}
   cardEffectManager: {fileID: -4904186202241250128}
   buildPlacer: {fileID: -1668363862658406223}
   buildingEffectManager: {fileID: 4382083402972015725}
   empireManager: {fileID: -1957080114997919942}
+  religionEffectManager: {fileID: 7962230793042904001}
   multiplayerScene: Multiplayer Game
   singlePlayer: 
   playerCamera: {fileID: 0}
@@ -168,6 +167,7 @@ MonoBehaviour:
   playerGovernment: {fileID: 0}
   playerTechs: []
   hasGov: 0
+  createdAReligion: 0
   interval: 0
   intervalSeconds: 30
 --- !u!114 &-7064104150945172825
@@ -191,6 +191,7 @@ MonoBehaviour:
   eventCard: []
   allEventCards: []
   queuedCards: []
+  religionCards: []
 --- !u!114 &-4904186202241250128
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -204,18 +205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerScript: {fileID: -8207881799818019171}
---- !u!114 &6615584646330148248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4452702601904455997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 534313bc2c462bf46877571927e37ef5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  religionEffectManager: {fileID: 0}
 --- !u!114 &-1668363862658406223
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280,3 +270,16 @@ MonoBehaviour:
   - {r: 0.6901961, g: 0.76862746, b: 0.87058824, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
+--- !u!114 &7962230793042904001
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4452702601904455997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48de315e4a691ac479cd6f75b75ec235, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerReligion: {fileID: 0}

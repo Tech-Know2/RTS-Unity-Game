@@ -17,11 +17,12 @@ public class Player : NetworkBehaviour
     public CardDealer cardDealer;
     public GameManager gameManager;
     public GameObject mapObject;
-    public CardPlacer cardPlacer;
     public CardEffectManager cardEffectManager;
     public BuildPlacer buildPlacer;
     public BuildingEffectManager buildingEffectManager;
     public EmpireManager empireManager;
+    public ReligionEffectManager religionEffectManager;
+    public NotificationController notificationController;
 
     // Scene Names
     public string multiplayerScene;
@@ -100,13 +101,16 @@ public class Player : NetworkBehaviour
         }
     }
 
-    //Control the turns
+    //Control the intervals
     public void DealWithIntervalChange()
     {
         gameManager.interval = currentInterval;
         gameManager.UpdateEra();
+        gameManager.playerTechPoints++;
 
         cardEffectManager.EffectsPerInterval();
+
+        Debug.Log("Interval: " + currentInterval);
     }
 
     public void GetCards()
@@ -151,6 +155,7 @@ public class Player : NetworkBehaviour
         //Connect to the UI
         UIObject = GameObject.FindGameObjectWithTag("ClientUI");
         UIController = UIObject.GetComponent<UIController>();
+        notificationController = UIController.notificationController;
 
         //Connect the Game Manager to the Player
         gameManager = this.GetComponent<GameManager>();

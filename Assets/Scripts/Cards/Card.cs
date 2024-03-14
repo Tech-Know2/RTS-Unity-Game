@@ -24,8 +24,11 @@ public class EffectManagerList
 public class RelgiousEffectsList
 {
     public Religion religion; //Scriptable Object containing the information about the religon
+    public bool isPlayersReligion;
     public bool isDedication;
     public bool enablesSuzerain;
+    public string suzerainEffectType;
+    public bool suzerainEffect;
     public string religiousEffect;
     public bool usesChance;
     public bool usesAModifier;
@@ -106,6 +109,15 @@ public class Card : ScriptableObject
         "\"Economic Yield\" will grant you income over follower churches \n" +
         "\"Religious Expansion\" will add followers to all non dominant cities globally \n" +
         "\"Religious Safety\" will add followers to all dominant cities globally \n";
+
+    [TextArea(12, 40)]
+    public string suzerainEffectTypes =
+        "Strings to determine the suzerzin effect\n" +
+        "If the effect only lasts for 1 turn, don't select the Requires Multiple Turns Bool.\n" +
+        "If it only lasts for one turn, don't put in anything\n" +
+        "\"Academic\" education based suzerain card\n" +
+        "\"Political\" political based suzerain card\n" +
+        "\"Economic\" economic based suzerain card\n";
 
     public List<RelgiousEffectsList> religoiusEffectLists = new List<RelgiousEffectsList>();
     
