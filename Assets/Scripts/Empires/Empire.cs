@@ -16,7 +16,7 @@ public class Empire : ScriptableObject
 
     //Empire Wealth
     public int empireGold;
-    public int empireTechPoints;
+    public float empireTechPoints;
     
     //Empire Lands
     public List<City> empireSettlements = new List<City>();

@@ -26,10 +26,11 @@ public class GameManager : NetworkBehaviour
     public int interval = 0;
     public int eraLength = 30;
     public int gameEra = 1;
+    public int yearsPerInterval = 25;
 
     //Economy Vars
     public int playerGold = 0;
-    public int playerTechPoints = 1;
+    public float playerTechPoints = 1;
 
     //Player Vars
     public Player playerScript;
@@ -94,6 +95,11 @@ public class GameManager : NetworkBehaviour
         {
             gameEra = 3;
         }
+    }
+
+    public int CalcYear()
+    {
+        return interval * yearsPerInterval;
     }
 
     public int GetEra()

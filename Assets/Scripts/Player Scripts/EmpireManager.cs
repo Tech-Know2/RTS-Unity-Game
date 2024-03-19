@@ -46,6 +46,21 @@ public class EmpireManager : MonoBehaviour
         return empire;
     }
 
+    public void IntervalChanges(Empire empire)
+    {
+        UpdateEmpireGovernment(empire);
+        UpdateEmpireWealth(empire);
+        CalculateEmpireMainReligion(empire);
+        AddAReligionToEmpire(empire);
+        AddObjectToEmpire(empire);
+        CalculateTotalEmpireLoyalty(empire);
+        AddCityToEmpire(empire);
+        AddLandToEmpire(empire);
+        AddUnitToEmpire(empire);
+        UpdateAlliances(empire);
+        UpdateWarStatus(empire);
+    }
+
     public Empire UpdateEmpireGovernment(Empire empire)
     {
         empire.empireGovernment = playerScript.playerGovernment;

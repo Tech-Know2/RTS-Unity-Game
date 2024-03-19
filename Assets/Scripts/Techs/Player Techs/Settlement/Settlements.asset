@@ -20,3 +20,4 @@ MonoBehaviour:
   isResearched: 0
   techCards:
   - {fileID: 11400000, guid: 220c0b1bc4a496c4492470842528a1f3, type: 2}
+  - {fileID: 11400000, guid: 3966a4846a28f354d86e92b8d9c1ecc5, type: 2}

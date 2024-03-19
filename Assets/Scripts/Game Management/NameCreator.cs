@@ -4,22 +4,22 @@ using UnityEngine;
 public class NameCreator : MonoBehaviour
 {
     // City Names
-    public List<string> cityPrefixes = new List<string> { "Shadow", "Raven", "Gloom", "Crypt", "Mist", "Dusk", "Elder", "Sable", "Whisper", "Abyss", "Cursed", "Forgotten", "Grim", "Haunted", "Nocturnal", "Obsidian", "Silent", "Twilight", "Veiled" };
-    public List<string> citySuffixes = new List<string> { "burg", "haven", "shire", "stead", "gate", "borough", "hold", "keep", "vale", "Citadel", "Enclave", "Hollow", "Nexus", "Sanctum", "Temple", "Vault", "Wraith", "Zenith" };
+    private List<string> cityPrefixes = new List<string> { "Shadow", "Raven", "Gloom", "Crypt", "Mist", "Dusk", "Elder", "Sable", "Whisper", "Abyss", "Cursed", "Forgotten", "Grim", "Haunted", "Nocturnal", "Obsidian", "Silent", "Twilight", "Veiled" };
+    private List<string> citySuffixes = new List<string> { "burg", "haven", "shire", "stead", "gate", "borough", "hold", "keep", "vale", "citadel", "enclave", "hollow", "nexus", "sanctum", "temple", "vault", "wraith", "zenith" };
 
     // Religion Names
-    public List<string> religionPrefixes = new List<string> { "Celestial", "Harmony", "Eternal", "Divine", "Sacred", "Transcendent", "Mystic", "Enlightened", "Serenity", "Astral", "Ethereal", "Cosmic", "Radiant", "Zen", "Seraphic", "Oracle", "Reverent", "Immutable" };
-    public List<string> religionSuffixes = new List<string> { "Order", "Path", "Faith", "Doctrine", "Way", "Tradition", "Guidance", "Doctrine", "Teaching", "Covenant", "Essence", "Illumination", "Luminescence", "Oracle", "Unity", "Fellowship", "Sanctity", "Harmony" };
+    private List<string> religionPrefixes = new List<string> { "Celestial", "Harmony", "Eternal", "Divine", "Sacred", "Transcendent", "Mystic", "Enlightened", "Serenity", "Astral", "Ethereal", "Cosmic", "Radiant", "Zen", "Seraphic", "Oracle", "Reverent", "Immutable" };
+    private List<string> religionSuffixes = new List<string> { "order", "path", "faith", "doctrine", "way", "tradition", "guidance", "teaching", "covenant", "essence", "illumination", "luminescence", "oracle", "unity", "fellowship", "sanctity", "harmony" };
 
     // Unit Names
-    public List<string> maleFirstNames = new List<string> { "Arnulf", "Berengar", "Cuthbert", "Dunstan", "Ealdred", "Freeman", "Godfrey", "Harold", "Ingemar", "Jocelyn", "Kendrick", "Ludolf", "Maelwine", "Njal", "Osmund" };
-    public List<string> femaleFirstNames = new List<string> { "Aelfgifu", "Brynhild", "Cwenburh", "Dyveke", "Eadgyth", "Freydis", "Gisela", "Hildegarde", "Isolde", "Jorunn", "Kveldulfr", "Lilith", "Matilda", "Nanna", "Ottora" };
-    public List<string> lastNames = new List<string> { "Aelfricsson", "Beornwulfsson", "Cynbelsson", "Dagsson", "Eorlsson", "Fridhleifsson", "Gunnarsson", "Helmstan", "Ivarsson", "Jarlsson", "Ketilsson", "Leifsson", "Magnusson", "Njallson", "Ormrsson" };
+    private List<string> maleFirstNames = new List<string> { "Arnulf", "Berengar", "Cuthbert", "Dunstan", "Ealdred", "Freeman", "Godfrey", "Harold", "Ingemar", "Jocelyn", "Kendrick", "Ludolf", "Maelwine", "Njal", "Osmund", "Paul", "Ender", "Andrew", "Leto", "Harry" };
+    private List<string> femaleFirstNames = new List<string> { "Aelfgifu", "Brynhild", "Cwenburh", "Dyveke", "Eadgyth", "Freydis", "Gisela", "Hildegarde", "Isolde", "Jorunn", "Kveldulfr", "Lilith", "Matilda", "Nanna", "Ottora", "Alia", "Valentine" };
+    private List<string> lastNames = new List<string> { "Aelfricsson", "Beornwulfsson", "Cynbelsson", "Dagsson", "Eorlsson", "Fridhleifsson", "Gunnarsson", "Helmstan", "Ivarsson", "Jarlsson", "Ketilsson", "Leifsson", "Magnusson", "Njallson", "Ormrsson", "Atredies", "Harkonnen", "Wiggin", "Corrino", "Fenring", "Potter", "Granger" };
 
     //Empire Names
-    public List<string> empirePrefixes = new List<string> { "Holy", "King's", "Eastern", "Western", "Northern", "Southern", "Ancient", "Duchy of", "County of", "Imperial", "Grand", "Free", "Golden", "Silver", "Iron", "Oceanic", "Celestial" };
-    public List<string> dynastyNames = new List<string> { "von Hohenstein", "de Medici", "al-Farsi", "Plantagenet", "Habsburg", "Palaiologos", "Lancaster", "York", "Sforza", "Ming", "Tokugawa", "Timurid", "Borgia", "Song", "Rashid", "Seljuk", "Bourbon", "Romanov", "Umayyad", "Abbasid" };
-    public List<string> empireSuffixes = new List<string> { "Empire", "Kingdom", "Principality", "Dominion", "Caliphate", "Sultanate", "Grand Duchy", "County", "Union", "Commonwealth", "Federation", "Republic", "Collective", "Territory", "State", "Expanse" };
+    private List<string> empirePrefixes = new List<string> { "Holy", "King's", "Eastern", "Western", "Northern", "Southern", "Ancient", "Duchy of", "County of", "Imperial", "Grand", "Free", "Golden", "Silver", "Iron", "Oceanic", "Celestial" };
+    private List<string> dynastyNames = new List<string> { "von Hohenstein", "de Medici", "al-Farsi", "plantagenet", "habsburg", "palaiologos", "lancaster", "york", "sforza", "ming", "tokugawa", "timurid", "borgia", "song", "rashid", "seljuk", "bourbon", "romanov", "umayyad", "abbasid" };
+    private List<string> empireSuffixes = new List<string> { "Empire", "Kingdom", "Principality", "Dominion", "Caliphate", "Sultanate", "Grand Duchy", "County", "Union", "Commonwealth", "Federation", "Republic", "Collective", "Territory", "State", "Expanse" };
 
     public string GenerateCityName()
     {

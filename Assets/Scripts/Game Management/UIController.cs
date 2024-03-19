@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private GameObject mainUI;
-    [SerializeField] private TextMeshProUGUI goldDisplay, techPointDisplay, eraDisplay;
+    [SerializeField] private TextMeshProUGUI goldDisplay, techPointDisplay, yearDisplay;
 
     // Script Connection Vars
     public Player playerScript;
@@ -20,14 +20,99 @@ public class UIController : MonoBehaviour
     private bool playerConnected = false;
 
     //Card Slots
+    public GameObject playerHandObj;
     public List<GameObject> cardSlots = new List<GameObject>();
     public Card[] playerCards = {null, null, null, null, null};
+
+    //Building Slots
+    public GameObject buildPanel;
+    public Card buildPanelCard;
+    public List<GameObject> buildPanelSlots = new List<GameObject>();
 
     public void ConnectToPlayer(Player player, GameManager manager, CardDealer dealerScript)
     {
         this.playerScript = player;
         this.gameManagerScript = manager;
         this.dealer = dealerScript;
+    }
+
+    public void RemoveCardElement(GameObject cardObject)
+    {
+        for (int i = 0; i < playerCards.Length; i++)
+        {            
+            if(cardSlots[i] == cardObject)
+            {
+                ResetDisplay(i);
+            }
+        }
+    }
+
+    public void SetUpBuildingDisplay(Card card)
+    {
+        OpenBuildPanel();
+
+        buildPanelCard = card;
+
+        for(int i = 0; i < buildPanelCard.buildingGameObjects.Count; i++) //Max of 4 buildings
+        {
+            GameObject buildingSlot = buildPanelSlots[i];
+
+            buildingSlot.SetActive(true);
+
+            Building building = buildPanelCard.buildingGameObjects[i].GetComponent<BuildData>().buildData;
+
+            BuildingDataHolder dataHolder = buildingSlot.GetComponent<BuildingDataHolder>();
+            dataHolder.Display(building);
+            dataHolder.buildingObject = card.buildingGameObjects[i];
+        }
+    }
+
+    public void RemoveBuildElement(GameObject buildingSlotObj)
+    {
+        for (int i = 0; i < buildPanelSlots.Count; i++)
+        {            
+            if(buildPanelSlots[i] == buildingSlotObj)
+            {
+                buildingSlotObj.SetActive(false);
+
+                ResetBuildDisplay(i);
+            }
+        }
+    }
+
+    public void ResetBuildDisplay(int num)
+    {
+        BuildingDataHolder buildingDataHolder = buildPanelSlots[num].GetComponent<BuildingDataHolder>();
+
+        buildingDataHolder.buildingTitle.text = null;
+        buildingDataHolder.buildingDescription.text = null;
+
+        if(num + 1 >= buildPanelCard.buildingGameObjects.Count)
+        {
+            CloseBuildPanel();
+        }
+    }
+
+    public void CloseBuildPanel()
+    {
+        buildPanel.SetActive(false);
+        playerHandObj.SetActive(true);
+
+        for(int i = 0; i < buildPanelSlots.Count; i++)
+        {
+            buildPanelSlots[i].SetActive(true);
+        }
+    }
+
+    public void OpenBuildPanel()
+    {
+        for(int i = 0; i < buildPanelSlots.Count; i++)
+        {
+            buildPanelSlots[i].SetActive(false);
+        }
+
+        buildPanel.SetActive(true);
+        playerHandObj.SetActive(false);
     }
 
     public Player playerLink()
@@ -79,7 +164,7 @@ public class UIController : MonoBehaviour
         if(gameManagerScript != null)
         {
             goldDisplay.text = gameManagerScript.playerGold.ToString();
-            eraDisplay.text = gameManagerScript.gameEra.ToString();
+            yearDisplay.text = gameManagerScript.CalcYear().ToString();
             techPointDisplay.text = gameManagerScript.playerTechPoints.ToString();
 
         } else 
@@ -131,5 +216,26 @@ public class UIController : MonoBehaviour
         cardDataHolder.cardCategory.text = card.cardCategory;
         cardDataHolder.cardEra.text = card.cardEra.ToString();
         cardDataHolder.cardDescription.text = card.description;
+    }
+
+    private void ResetDisplay(int slotNum)
+    {
+        Debug.Log("Card Slot Num: " + slotNum);
+
+        //Gte access to the right digital diplay
+        GameObject cardSlot = cardSlots[slotNum];
+
+        //Reset the values in the array for cards
+        playerCards[slotNum] = null;
+
+        //Get the CardDataHolder component a reference to it
+        CardDataHolder cardDataHolder = cardSlot.GetComponent<CardDataHolder>();
+        cardDataHolder.attachedCard = null;
+
+        //Set the values
+        cardDataHolder.cardTitle.text = null;
+        cardDataHolder.cardCategory.text = null;
+        cardDataHolder.cardEra.text = null;
+        cardDataHolder.cardDescription.text = null;
     }
 }

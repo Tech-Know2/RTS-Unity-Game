@@ -72,39 +72,42 @@ public class NotificationController : MonoBehaviour
 
     public void Right()
     {
-        if(currentNum < totalNum - 1)
+        if (currentNum < totalNum - 1)
         {
             currentNum++;
-
-        } else if (currentNum == totalNum)
+        }
+        else
         {
             currentNum = 0;
         }
     }
+
 
     public void DeleteNotification()
     {
         if (totalNum > 0)
         {
             notifications.RemoveAt(currentNum);
-            currentNum = CalcLeft();
+            currentNum = CalcNewLocation();
         }
     }
 
-    private int CalcLeft()
+    private int CalcNewLocation()
     {
-        if(currentNum > 0)
+        if (currentNum > 0)
         {
-            return currentNum--;
-
-        } else if (currentNum == 0 && totalNum != 0)
+            return currentNum; //Try --currentNum if this does not work
+        }
+        else if (currentNum == 0 && totalNum != 0)
         {
             return currentNum = totalNum - 1;
-        } else if (totalNum == 0)
+        }
+        else if (totalNum == 0)
         {
             return 0;
         }
 
         return 0;
     }
+
 }

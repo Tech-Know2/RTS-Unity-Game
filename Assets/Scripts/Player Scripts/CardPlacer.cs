@@ -1,54 +1,144 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class CardPlacer : MonoBehaviour
 {
-    void Update()
+    //Cards vars
+    public Card clickedCard;
+    public GameObject currentCardObject, previousCardObject, tileClicked;
+
+    public List<string> tileTags = new List<string>();
+
+    //Display Vars
+    public Vector3 scalingFactor;
+    private Vector3 normalScaling;
+
+    //Script Connections
+    public Player playerScript;
+    public UIController uiController;
+    public CardEffectManager cardEffectManager;
+    public GameManager gameManager;
+    public BuildPlacer buildPlacer;
+    public BuildingEffectManager buildingEffectManager;
+
+    public void Start()
     {
-        if (Input.GetMouseButtonDown(0))
+        uiController = playerScript.UIController;
+    }
+
+    public void CardClicked(GameObject cardObject)
+    {
+        Card cardData;
+
+        currentCardObject = cardObject;
+
+        if(normalScaling == null)
         {
-            // Create a pointer event
-            PointerEventData pointerEventData = new PointerEventData(EventSystem.current);
+            normalScaling = cardObject.transform.localScale;
+        }
 
-            // Set the pointer event position to the mouse position
-            pointerEventData.position = Input.mousePosition;
+        if(previousCardObject == null)
+        {
+            //If this is the first thing clicked, scale it up
+            previousCardObject = currentCardObject;
 
-            // Check if the mouse is over a UI element
-            if (EventSystem.current.IsPointerOverGameObject())
+            ScaleUp(currentCardObject);
+
+        } else if (previousCardObject != null && previousCardObject != currentCardObject) //If something before it was already scaled up, scale the previous down, and then scale the new one up
+        {
+            ScaleDown(previousCardObject);
+            ScaleUp(currentCardObject);
+
+            previousCardObject = currentCardObject;
+
+        } else if (previousCardObject == currentCardObject)
+        {
+            ScaleDown(currentCardObject);
+
+            previousCardObject = null;
+            currentCardObject = null;
+        }
+
+        if(cardObject != null)
+        {
+            //Get data from object
+            CardDataHolder cardDataHolder = cardObject.GetComponent<CardDataHolder>();
+            cardData = cardDataHolder.GetAttachedCard();
+        }
+    }
+
+    private void ScaleUp(GameObject obj)
+    {
+        //Scale up the newly clicked object
+        Vector3 currentScale = obj.transform.localScale;
+        Vector3 newScale = currentScale + scalingFactor;
+        obj.transform.localScale = newScale;
+
+        Debug.Log("Scaled up");
+    }
+
+    private void ScaleDown(GameObject obj)
+    {
+        Vector3 currentScale = obj.transform.localScale;
+        Vector3 newScale = currentScale - scalingFactor;
+        obj.transform.localScale = newScale;
+
+        Debug.Log("Scaled down");
+    }
+
+    public void Update()
+    {
+        // Check if the left mouse button is clicked and a card has been clicked
+        if (Input.GetMouseButtonDown(0) && currentCardObject != null)
+        {
+            // Cast a ray from the mouse position into the scene
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            // Check if the ray hits an object
+            if (Physics.Raycast(ray, out hit))
             {
-                // Get the GameObject that was clicked on
-                GameObject clickedObject = pointerEventData.pointerCurrentRaycast.gameObject;
-
-                // Check if the clicked UI element has the desired component
-                if (clickedObject != null)
+                // Check if the hit object's tag is contained in the tileTags list
+                if (tileTags.Contains(hit.collider.tag))
                 {
-                    CardDataHolder cardData = clickedObject.GetComponent<CardDataHolder>();
-
-                    // Check if the component exists before using it
-                    if (cardData != null)
-                    {
-                        // Do something with the UI component
-                        Debug.Log(cardData.GetAttachedCard() + " Card Selected");
-
-                        if (cardData.GetAttachedCard() != null)
-                        {
-                            // Execute card functions
-                        }
-                    }
-                    else
-                    {
-                        Debug.Log("CardDataHolder component not found on the clicked UI element.");
-                    }
-                }
-                else
-                {
-                    Debug.Log("No UI element selected.");
+                    // Do something with the clicked object (e.g., call a method)
+                    OnTileClicked(hit.collider.gameObject);
                 }
             }
-            else
+        }
+    }
+
+    void OnTileClicked(GameObject tileObject)
+    {
+        CardDataHolder cardDataHolder = currentCardObject.GetComponent<CardDataHolder>();
+        Card card = cardDataHolder.attachedCard;
+
+        if(currentCardObject != null && (card.desiredTilesList.Contains(tileObject.tag) || card.desiredTilesList.Count == 0))
+        {
+            //Remove that card from the data in the UI controller
+            Debug.Log(currentCardObject);
+            playerScript.UIController.RemoveCardElement(currentCardObject);
+
+            ScaleDown(currentCardObject);
+            currentCardObject = null;
+            previousCardObject = null;
+
+            if(card.effectManagerList.Count != 0 || card.religoiusEffectLists.Count != 0)
             {
-                Debug.Log("No Card Selected");
+                //Deal with the effects of the card (Religion/Standard)
+                cardEffectManager.NewCardEffectSorter(card, tileObject);
             }
+
+            if(card.buildsSomething == true)
+            {
+                //Pass to build system
+                playerScript.UIController.SetUpBuildingDisplay(card);
+            }
+            
+        } else 
+        {
+            playerScript.notificationController.CreateNotification("Card Placement Error", "That card can't be player on that tile, try another tile please");
         }
     }
 }

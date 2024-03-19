@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80bb3576c36a75c4aa2cacf86ac97e2a, type: 3}
-  m_Name: Humble Abode
+  m_Name: Test Card
   m_EditorClassIdentifier: 
-  cardName: Humble Abode
-  description: Convert one of your starter basic soldier units into a city.
+  cardName: Test Card
+  description: Test
   cardCategory: Settlement
   cardColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   cardTech: Settlements
@@ -32,7 +32,7 @@ MonoBehaviour:
   isPeaceTreatyCard: 0
   isPurchasable: 1
   goldCost: 100
-  buildsSomething: 1
+  buildsSomething: 0
   createAReligion: 0
   effectDescriptionEditorDisplay: "Strings to determine the effects on the game:
     Don't Alter Won't Change\nIf the effect only lasts for 1 turn, don't select the
@@ -44,7 +44,17 @@ MonoBehaviour:
     from area\n\"Weariness Cost\" to effect war weariness\n\"Loyalty Cost\" to effect
     the loyalty of your people \n\"Tech Cost\" to effect your empire's tech points
     \n"
-  effectManagerList: []
+  effectManagerList:
+  - requiresMultipleTurns: 0
+    goesForever: 0
+    turnEffectLength: 0
+    effectCost: 100
+    costType: Gold Cost
+    religionName: 
+    governmentType: {fileID: 0}
+    turnsActive: 0
+    requiresTiles: 0
+    usesChance: 0
   religousEffectsEditorDisplay: "Strings to determine the effects on player religion\nIf
     the effect only lasts for 1 turn, don't select the Requires Multiple Turns Bool.\nIf
     it only lasts for one turn, don't put in anything\n\"Mono or Poly\" to determine
@@ -79,13 +89,9 @@ MonoBehaviour:
 
 '
   religoiusEffectLists: []
-  buildingGameObjects:
-  - {fileID: 1131556473704323501, guid: 8124d8e76c4e6d84ba216bfa92f76a17, type: 3}
+  buildingGameObjects: []
   desierdTileString: "Strings to determine the effects on the game: Don't Alter Won't
     Change\n\"Indicates which tile the card can effect\" \n\"Deep Water\" \n\"Shallow
     Water\" \n\"Sand\" \n\"Grass\" \n\"Mountain\" \n"
-  desiredTilesList:
-  - Sand
-  - Grass
-  - Mountain
+  desiredTilesList: []
   units: []

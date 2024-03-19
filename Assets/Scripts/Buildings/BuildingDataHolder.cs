@@ -4,10 +4,11 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class CardDataHolder : MonoBehaviour
+public class BuildingDataHolder : MonoBehaviour
 {
-    public Card attachedCard;
-    public TextMeshProUGUI cardTitle, cardCategory, cardEra, cardDescription;
+    public Building attachedBuilding;
+    public GameObject buildingObject;
+    public TextMeshProUGUI buildingTitle, buildingDescription;
     public UIController uiController;
     public Player player;
 
@@ -24,30 +25,26 @@ public class CardDataHolder : MonoBehaviour
         }
     } 
 
-    //Card Data Retrevial
-    public Card GetAttachedCard()
-    {
-        if(attachedCard != null)
-        {
-            return attachedCard;
-        }
-
-        return null;
-    }
-
     //Initiate the card placements
-    public void GetCard()
+    public void GetBuilding()
     {
         if(player != null)
         {
-            Card currentCard = GetAttachedCard();
-
             //Start the card placement process
-            player.cardPlacer.CardClicked(gameObject);
+            player.buildPlacer.BuildingSlotClick(gameObject);
+
         } else 
         {
             GetPlayerScript();
-            GetCard();
+            GetBuilding();
         }
+    }
+
+    public void Display(Building buildingData)
+    {
+        attachedBuilding = buildingData;
+
+        buildingTitle.text = buildingData.buildingName;
+        buildingDescription.text = buildingData.buildingDescription;
     }
 }

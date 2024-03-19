@@ -92,19 +92,19 @@ public class CardDealer : MonoBehaviour
 
             } else if (cardTypeInt >= 6 && cardTypeInt < 10) // Event Cards
             {
-                Debug.Log("Deal Event Card. Actually deals acton cards until, event cards added to game");
+                Debug.Log("Deal Event Card. Actually deals acton cards until event cards added to game");
 
                 DealActionCards();
                 //DealEventCards();
 
             } else //Religious Cards
             {
-                Debug.Log("Deal Religion Card. Actually deals acton cards until, event cards added to game");
+                Debug.Log("Deal Religion Card. Actually deals acton cards until the player has a religion");
 
                 if(gameManager.GetEra() > 1 && player.createdAReligion == true)
                 {
-                    DealActionCards();
-                    //DealReligionCards();
+                    DealReligionCards();
+
                 } else 
                 {
                     Debug.Log("Wrong era, or has not created a religion yet");

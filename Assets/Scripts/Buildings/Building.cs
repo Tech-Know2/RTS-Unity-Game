@@ -8,7 +8,6 @@ public class Building : ScriptableObject
     //Display Attributes
     public string buildingName;
     public string buildingDescription;
-    public Sprite buildingThumbnail;
 
     //Game Modifier Attribute Variables for Consumption
     public int peopleInitialCost;
@@ -21,10 +20,27 @@ public class Building : ScriptableObject
     public int goldProduction;
     public int foodProduction;
     public float techPointProduction;
+    public Building buildingsParentSettlement;
 
     //Variables to Keep Track of Building Constraints and Requierments
     public bool requiresASettlement;
+    public bool isASettlement;
+    public string settlementName;
     public List<string> acceptableBuildTiles = new List<string>();
+
+    //Settlement Info
+    public List<Object> settlementObjectInventory = new List<Object>();
+    public List<Object> settlementReligiousFollowers = new List<Object>();
+    public List<Unit> settlementUnits = new List<Unit>();
+    public List<Religion> settlementReligions = new List<Religion>();
+    public List<Building> settlementBuildings = new List<Building>();
+    public List<GameObject> settlementTiles = new List<GameObject>();
+    public Religion mainReligion;
+    public int settlementFood = 50;
+    public int settlementLevel = 1;
+    public int settlementPopulation = 25;
+    public int settlementGoldProduction = 0;
+    public int settlementTechPointProduction = 0;
 
     //Producible Objects from Building
     public List<Object> producableObjects = new List<Object>();

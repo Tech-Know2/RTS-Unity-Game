@@ -23,6 +23,7 @@ public class Player : NetworkBehaviour
     public EmpireManager empireManager;
     public ReligionEffectManager religionEffectManager;
     public NotificationController notificationController;
+    public CardPlacer cardPlacer;
 
     // Scene Names
     public string multiplayerScene;
@@ -97,7 +98,7 @@ public class Player : NetworkBehaviour
         {
             yield return new WaitForSeconds(intervalSeconds);
 
-            interval++;
+            interval += 1;
         }
     }
 
@@ -109,6 +110,13 @@ public class Player : NetworkBehaviour
         gameManager.playerTechPoints++;
 
         cardEffectManager.EffectsPerInterval();
+        buildingEffectManager.IntervalEffects();
+
+        if(playerEmpire != null)
+        {
+            empireManager.IntervalChanges(playerEmpire);
+        }
+        
 
         Debug.Log("Interval: " + currentInterval);
     }

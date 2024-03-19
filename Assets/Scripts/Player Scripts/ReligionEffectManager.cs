@@ -14,6 +14,8 @@ public class ReligionEffectManager : MonoBehaviour
         playerReligion.religionName = playerScript.empireManager.nameCreator.GenerateReligionName();
         playerReligion.religionColor = playerScript.playerColor;
 
+        playerScript.createdAReligion = true;
+
         return playerReligion;
     }
 

@@ -65,6 +65,7 @@ public class Card : ScriptableObject
     //Standard Vars
     public bool isPurchasable;
     public int goldCost;
+    public bool buildsSomething = false;
 
     //Religious Vars
     public bool createAReligion;

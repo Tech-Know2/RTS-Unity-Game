@@ -1,0 +1,40 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e096d734f5fb847b5a2950148be364, type: 3}
+  m_Name: Settlement
+  m_EditorClassIdentifier: 
+  buildingName: Settlement
+  buildingDescription: A new location for your ever growing civilization.
+  peopleInitialCost: 0
+  goldUpKeep: 0
+  peopleUpKeep: 0
+  foodUpkeep: 0
+  health: 0
+  goldProduction: 0
+  foodProduction: 0
+  techPointProduction: 0
+  requiresASettlement: 0
+  isASettlement: 1
+  settlementName: 
+  acceptableBuildTiles:
+  - Sand
+  - Grass
+  - Mountain
+  producableObjects: []
+  isReligiousTrainingRelated: 0
+  isPath: 0
+  isDefense: 0
+  isGate: 0
+  isBridge: 0
+  isMountable: 0
+  isSightCapable: 0
+  sightRange: 0
