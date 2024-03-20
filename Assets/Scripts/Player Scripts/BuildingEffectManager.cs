@@ -10,6 +10,8 @@ public class BuildingEffectManager : MonoBehaviour
 
     public List<Building> settlementData = new List<Building>();
     public List<GameObject> settlementObjs = new List<GameObject>();
+    public float settlementRadius = 1f;
+    public List<string> tileTags = new List<string>();
 
     public List<Building> buildingData = new List<Building>();
     public List<GameObject> buildingObjs = new List<GameObject>();
@@ -58,6 +60,10 @@ public class BuildingEffectManager : MonoBehaviour
         Building preData = obj.GetComponent<BuildData>().buildData;
         Building data = Instantiate(preData);
 
+        //Get the tiles under the settlement and add them to the settlement data
+        data = GetSettlementTiles(obj, data);
+        data.isCapital = isCapital(data);
+
         //Store the data and the objects
         settlementData.Add(data);
         settlementObjs.Add(obj);
@@ -101,61 +107,94 @@ public class BuildingEffectManager : MonoBehaviour
     //Functions to calculate and manage settlement needs
     public void UpdatePopandFood(Building data)
     {
-        data.settlementFood -= data.settlementPopulation;
-        data.settlementPopulation += (int) data.settlementFood / 2; //2 food per person
+        //data.settlementFood -= data.settlementPopulation;
+        //data.settlementPopulation += (int) data.settlementFood / 2; //2 food per person
     }
 
     public void CalcReligion(Building data)
     {
-        List<int> followerCount = new List<int>();
-
-        foreach (Object follower in data.settlementReligiousFollowers)
+        if((data.settlementReligiousFollowers.Count != 0) || (data.settlementReligions.Count != 0))
         {
-            Religion currentReligion = follower.followerReligion;
+            List<int> followerCount = new List<int>();
 
-            if (!data.settlementReligions.Contains(follower.followerReligion))
+            foreach (Object follower in data.settlementReligiousFollowers)
             {
-                data.settlementReligions.Add(follower.followerReligion);
+                Religion currentReligion = follower.followerReligion;
 
-                followerCount.Add(0);
-            }
-        }
-
-        for (int r = 0; r < data.settlementReligions.Count; r++)
-        {
-            Religion religion = data.settlementReligions[r];
-
-            for (int f = 0; f < data.settlementReligiousFollowers.Count; f++)
-            {
-                Object follower = data.settlementReligiousFollowers[f];
-
-                if (follower.followerReligion == religion)
+                if (!data.settlementReligions.Contains(follower.followerReligion))
                 {
-                    followerCount[r] += 1;
+                    data.settlementReligions.Add(follower.followerReligion);
+
+                    followerCount.Add(0);
                 }
             }
-        }
 
-        int currentMaxElement = 0; // Store element id
-        int currentMaxNum = 0; // Store max follower count
-
-        for (int i = 0; i < followerCount.Count; i++)
-        {
-            if (followerCount[i] > currentMaxNum)
+            for (int r = 0; r < data.settlementReligions.Count; r++)
             {
-                currentMaxNum = followerCount[i];
-                currentMaxElement = i;
+                Religion religion = data.settlementReligions[r];
+
+                for (int f = 0; f < data.settlementReligiousFollowers.Count; f++)
+                {
+                    Object follower = data.settlementReligiousFollowers[f];
+
+                    if (follower.followerReligion == religion)
+                    {
+                        followerCount[r] += 1;
+                    }
+                }
+            }
+
+            int currentMaxElement = 0; // Store element id
+            int currentMaxNum = 0; // Store max follower count
+
+            for (int i = 0; i < followerCount.Count; i++)
+            {
+                if (followerCount[i] > currentMaxNum)
+                {
+                    currentMaxNum = followerCount[i];
+                    currentMaxElement = i;
+                }
+            }
+
+            data.mainReligion = data.settlementReligions[currentMaxElement];
+        }
+    }
+
+    public Building GetSettlementTiles(GameObject obj, Building data)
+    {
+        float radius = settlementRadius * data.settlementLevel;
+
+        Collider[] colliders = Physics.OverlapSphere(obj.transform.position, radius);
+
+        // Iterate through all colliders and filter objects with desired tags
+        foreach (Collider collider in colliders)
+        {
+            // Check if the collider's tag is one of the desired tags
+            if (tileTags.Contains(collider.tag))
+            {
+                GameObject tile = collider.gameObject;
+
+                data.settlementTiles.Add(tile);
             }
         }
 
-        data.mainReligion = data.settlementReligions[currentMaxElement];
+        return data;
     }
-
     
     public void UpgradeSettlement(Building data)
     {
         //Upgrade if requirements are met (population, building count, income, etc)
         //Increase influence, and add the tiles to the settlement
+    }
+
+    public bool isCapital(Building data)
+    {
+        if(settlementData.Count == 0)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     //Functions to calculate and manage building needs

@@ -226,6 +226,13 @@ MonoBehaviour:
   uiController: {fileID: 0}
   settlementData: []
   settlementObjs: []
+  settlementRadius: 1
+  tileTags:
+  - Deep Water
+  - Shallow Water
+  - Sand
+  - Grass
+  - Mountain
   buildingData: []
   buildingObjs: []
 --- !u!114 &-1957080114997919942

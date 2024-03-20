@@ -56,7 +56,7 @@ public class TechDisplayController : MonoBehaviour
     public void ResearchIt()
     {
         //If it has a previous tech
-        if(uiController != null && uiController.gameManagerScript.playerTechPoints > 0 && previousTechController == null)
+        if(uiController != null && uiController.gameManagerScript.playerTechPoints > 0 && previousTechController == null && uiController.gameManagerScript.gameEra == buttonTech.techEra)
         {
             foreach (Card card in buttonTech.techCards)
             {
@@ -73,7 +73,7 @@ public class TechDisplayController : MonoBehaviour
 
             uiController.notificationController.CreateNotification("Tech Researched", buttonTech.techName + " has been researched in the tech tree");
 
-        } else if (uiController != null && uiController.gameManagerScript.playerTechPoints > 0 && previousTechController.hasBeenResearched == true)
+        } else if (uiController != null && uiController.gameManagerScript.playerTechPoints > 0 && previousTechController.hasBeenResearched == true && uiController.gameManagerScript.gameEra == buttonTech.techEra)
         {
             foreach (Card card in buttonTech.techCards)
             {
@@ -94,7 +94,22 @@ public class TechDisplayController : MonoBehaviour
         {
             Debug.Log("Cant research it yet");
 
-            uiController.notificationController.CreateNotification("Research Update", " You are unable to research the " + buttonTech.techName + " tech just yet.");
+            if(uiController.gameManagerScript.gameEra != buttonTech.techEra)
+            {
+                uiController.notificationController.CreateNotification("Wrong Era for Tech", "You are in the wrong era for " + buttonTech.techName + " to be researched.");
+
+            } else if (uiController.gameManagerScript.playerTechPoints == 0)
+            {
+                uiController.notificationController.CreateNotification("Not Enough Tech Points", "You are unable to research the " + buttonTech.techName + " due to lack of tech points.");
+
+            } else if (previousTechController.hasBeenResearched == false)
+            {
+                uiController.notificationController.CreateNotification("Previous Tech Not Researched", "You must research " + previousTechController.buttonTech.techName + " before this tech.");
+
+            } else 
+            {
+                uiController.notificationController.CreateNotification("Research Update", "You are unable to research " + buttonTech.techName + " at this time.");
+            }
         }
     }
 }

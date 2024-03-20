@@ -80,7 +80,7 @@ MonoBehaviour:
 '
   religoiusEffectLists: []
   buildingGameObjects:
-  - {fileID: 1131556473704323501, guid: 8124d8e76c4e6d84ba216bfa92f76a17, type: 3}
+  - {fileID: 7804074099760834611, guid: 87c8e7e3cce09a84c8d5a5ae34d684b2, type: 3}
   desierdTileString: "Strings to determine the effects on the game: Don't Alter Won't
     Change\n\"Indicates which tile the card can effect\" \n\"Deep Water\" \n\"Shallow
     Water\" \n\"Sand\" \n\"Grass\" \n\"Mountain\" \n"

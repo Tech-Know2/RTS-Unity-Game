@@ -29,6 +29,7 @@ public class Building : ScriptableObject
     public List<string> acceptableBuildTiles = new List<string>();
 
     //Settlement Info
+    public bool isCapital = false;
     public List<Object> settlementObjectInventory = new List<Object>();
     public List<Object> settlementReligiousFollowers = new List<Object>();
     public List<Unit> settlementUnits = new List<Unit>();

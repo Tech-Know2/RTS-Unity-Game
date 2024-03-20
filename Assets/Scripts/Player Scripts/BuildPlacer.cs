@@ -85,14 +85,20 @@ public class BuildPlacer : MonoBehaviour
                 // Check if the hit object's tag is contained in the tileTags list
                 if (tileTags.Contains(hit.collider.tag))
                 {
+                    // Get the bounds of the clicked object
+                    Bounds bounds = hit.collider.bounds;
+
+                    // Calculate the y height of the top of the object
+                    float topYHeight = bounds.max.y;
+
                     // Do something with the clicked object (e.g., call a method)
-                    OnTileClicked(hit.collider.gameObject);
+                    OnTileClicked(hit.collider.gameObject, topYHeight);
                 }
             }
         }
     }
 
-    void OnTileClicked(GameObject tileObject)
+    void OnTileClicked(GameObject tileObject, float yHeight)
     {
         BuildingDataHolder buildingDataHolder = currentBuildSlot.GetComponent<BuildingDataHolder>();
         Building building = buildingDataHolder.attachedBuilding;
@@ -107,7 +113,7 @@ public class BuildPlacer : MonoBehaviour
             currentBuildSlot = null;
             previousBuildSlot = null;
 
-            GameObject newBuilding = Instantiate(buildingDataHolder.buildingObject, new Vector3(tileObject.transform.position.x, tileObject.transform.position.y + 1, tileObject.transform.position.z), tileObject.transform.rotation);
+            GameObject newBuilding = Instantiate(buildingDataHolder.buildingObject, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
 
             if(building.isASettlement == true)
             {

@@ -114,7 +114,7 @@ public class CardPlacer : MonoBehaviour
         CardDataHolder cardDataHolder = currentCardObject.GetComponent<CardDataHolder>();
         Card card = cardDataHolder.attachedCard;
 
-        if(currentCardObject != null && (card.desiredTilesList.Contains(tileObject.tag) || card.desiredTilesList.Count == 0))
+        if(currentCardObject != null && ((card.desiredTilesList.Contains(tileObject.tag) || card.desiredTilesList.Count == 0) && ((requiresSettlement(card) == true && tilesUnderSettlement(tileObject) == true) || requiresSettlement(card) == false)))
         {
             //Remove that card from the data in the UI controller
             Debug.Log(currentCardObject);
@@ -140,5 +140,33 @@ public class CardPlacer : MonoBehaviour
         {
             playerScript.notificationController.CreateNotification("Card Placement Error", "That card can't be player on that tile, try another tile please");
         }
+    }
+
+    bool requiresSettlement(Card data)
+    {
+        foreach (EffectManagerList effect in data.effectManagerList)
+        {
+            if(effect.requiresTiles == true)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool tilesUnderSettlement(GameObject tile)
+    {
+        foreach (Building settlement in buildingEffectManager.settlementData)
+        {
+            if(settlement.settlementTiles.Contains(tile))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        return false;
     }
 }

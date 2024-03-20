@@ -10,10 +10,10 @@ public class TechTreeController : MonoBehaviour
     public GameObject mainUI;
     public GameObject techTreeUI;
     private Image buttonImage;
-    public Color activeBranchColor;
-    public Color defaultBranchColor;
     public List<Button> branchButtons = new List<Button>();
     public List<GameObject> branchObjects = new List<GameObject>();
+    public bool allowedToSwitchBranches = false;
+    public Tech requiredTech;
 
     public void Start()
     {
@@ -27,7 +27,14 @@ public class TechTreeController : MonoBehaviour
         mainUI.SetActive(false);
         techTreeUI.SetActive(true);
 
-        SwitchBranches();
+        if(canSwitch() == false)
+        {
+            CloseAllBranches();
+            branchObjects[0].SetActive(true);
+        } else 
+        {
+            SwitchBranches();
+        }
 
         uiController.playerScript.cameraPanningAllowed = false;
         uiController.playerScript.cameraMovementAllowed = false;
@@ -50,39 +57,43 @@ public class TechTreeController : MonoBehaviour
         {
             branchObjects[i].SetActive(false);
         }
-
-        for (int i = 0; i < branchButtons.Count; i++)
-        {
-            branchButtons[i].image.color =  defaultBranchColor;
-        }
     }
 
     public void SwitchBranches()
     {
-        CloseAllBranches();
-
-        // The clicked button's GameObject can be obtained from the current event
-        GameObject buttonObject = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
-
-        int branch = 0;
-
-        for (int i = 0; i < branchButtons.Count; i++)
+        if(canSwitch() == true)
         {
-            if (buttonObject == branchButtons[i].gameObject)
+            CloseAllBranches();
+
+            // The clicked button's GameObject can be obtained from the current event
+            GameObject buttonObject = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
+
+            int branch = 0;
+
+            for (int i = 0; i < branchButtons.Count; i++)
             {
-                branch = i;
+                if (buttonObject == branchButtons[i].gameObject)
+                {
+                    branch = i;
+                }
             }
-        }
 
-        branchObjects[branch].SetActive(true);
-        Debug.Log(branchObjects[branch]);
-
-        // Cast the GameObject to Button and set the color
-        Button buttonComponent = buttonObject.GetComponent<Button>();
-
-        if (buttonComponent != null)
+            branchObjects[branch].SetActive(true);
+            Debug.Log(branchObjects[branch]);
+        }else
         {
-            buttonComponent.image.color = activeBranchColor;
+            uiController.playerScript.notificationController.CreateNotification("Can't Change Branch", "You must first research the settlement tech in order to switch to other branches");
+        }
+    }
+
+    private bool canSwitch()
+    {
+        if(uiController.playerScript.playerTechs.Contains(requiredTech))
+        {
+            return true;
+        } else 
+        {
+            return false;
         }
     }
 }
