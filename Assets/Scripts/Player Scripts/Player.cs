@@ -73,6 +73,9 @@ public class Player : NetworkBehaviour
     private int currentInterval = 0;
     public float intervalSeconds = 30f;
 
+    [SyncObject]
+    public readonly SyncList<Player> playerList = new SyncList<Player>();
+
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -131,8 +134,6 @@ public class Player : NetworkBehaviour
             hasGov = false;
         }
 
-        Card dealtCard;
-
         //Deal With card dealing
         cardDealer.FilterCards(hasGov);
         cardDealer.DealCards();
@@ -143,6 +144,13 @@ public class Player : NetworkBehaviour
     {
         player = GetComponent<Player>();
         cardDealer = GetComponent<CardDealer>();
+
+        playerList.Add(this);
+
+        if(playerList.Count > 0)
+        {
+            Debug.Log("Player added to player list");
+        }
 
         currentInterval = interval;
     }
@@ -264,11 +272,11 @@ public class Player : NetworkBehaviour
 
         transform.position = cameraTransform.position;
 
-        if (interval != currentInterval)
+        if (interval == (currentInterval + 1))
         {
-            DealWithIntervalChange();
-
             currentInterval = interval;
+
+            DealWithIntervalChange();
         }
     }
 

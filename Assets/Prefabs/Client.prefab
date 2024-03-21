@@ -306,6 +306,7 @@ MonoBehaviour:
   currentCardObject: {fileID: 0}
   previousCardObject: {fileID: 0}
   tileClicked: {fileID: 0}
+  cardCurrentlyClicked: 0
   tileTags:
   - Deep Water
   - Shallow Water
@@ -317,7 +318,7 @@ MonoBehaviour:
   uiController: {fileID: 0}
   cardEffectManager: {fileID: -4904186202241250128}
   gameManager: {fileID: 1144843836270000796}
-  buildPlacer: {fileID: 0}
+  buildPlacer: {fileID: -8726642806228921605}
   buildingEffectManager: {fileID: 4382083402972015725}
 --- !u!114 &-8726642806228921605
 MonoBehaviour:
@@ -344,3 +345,4 @@ MonoBehaviour:
   currentBuildSlot: {fileID: 0}
   previousBuildSlot: {fileID: 0}
   tileClicked: {fileID: 0}
+  previewMat: {fileID: 2100000, guid: 59db830e87998b14ab0ab3aef359b721, type: 2}

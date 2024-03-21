@@ -107,7 +107,7 @@ public class MapController : NetworkBehaviour
             }
         }
 
-        //RpcReceiveTerrainData(terrainData.ToArray());
+        RpcReceiveTerrainData(terrainData.ToArray());
     }
 
     [ObserversRpc(ExcludeOwner = true)]

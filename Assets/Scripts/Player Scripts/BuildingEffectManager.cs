@@ -101,7 +101,13 @@ public class BuildingEffectManager : MonoBehaviour
             UpdatePopandFood(settlement);
             CalcReligion(settlement);
             UpgradeSettlement(settlement);
+            SettlementIncome(settlement);
         }
+    }
+
+    public void SettlementIncome(Building data)
+    {
+        playerScript.gameManager.playerGold += data.settlementPopulation;
     }
 
     //Functions to calculate and manage settlement needs

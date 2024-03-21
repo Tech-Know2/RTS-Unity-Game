@@ -47,6 +47,20 @@ public class UIController : MonoBehaviour
         }
     }
 
+    public void RemoveElement(Card card)
+    {
+        for(int i = 0; i < playerCards.Length; i++)
+        {
+            CardDataHolder dataHolder = cardSlots[i].GetComponent<CardDataHolder>();
+            Card compCard = dataHolder.attachedCard;
+
+            if(compCard == card)
+            {
+                ResetDisplay(i);
+            }
+        }
+    }
+
     public void SetUpBuildingDisplay(Card card)
     {
         OpenBuildPanel();
@@ -198,6 +212,9 @@ public class UIController : MonoBehaviour
         int openSlot = slotNum;
 
         Debug.Log("Display Card method called" + card);
+
+        //Assing the player to the card for multiplayer features
+        card.originalPlayer = playerScript;
         
         playerCards[openSlot] = card;
 

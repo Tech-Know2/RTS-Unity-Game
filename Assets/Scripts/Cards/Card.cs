@@ -49,7 +49,7 @@ public class Card : ScriptableObject
     public bool isReligiousCard;
 
     //Multiplayer Vars
-    public string originalPlayer;
+    public Player originalPlayer;
 
     //Government Vars
     public bool governmentRelated = false;

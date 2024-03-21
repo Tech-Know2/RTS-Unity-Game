@@ -7,6 +7,7 @@ public class CardPlacer : MonoBehaviour
     //Cards vars
     public Card clickedCard;
     public GameObject currentCardObject, previousCardObject, tileClicked;
+    public bool cardCurrentlyClicked = false;
 
     public List<string> tileTags = new List<string>();
 
@@ -45,6 +46,8 @@ public class CardPlacer : MonoBehaviour
 
             ScaleUp(currentCardObject);
 
+            cardCurrentlyClicked = true;
+
         } else if (previousCardObject != null && previousCardObject != currentCardObject) //If something before it was already scaled up, scale the previous down, and then scale the new one up
         {
             ScaleDown(previousCardObject);
@@ -52,12 +55,16 @@ public class CardPlacer : MonoBehaviour
 
             previousCardObject = currentCardObject;
 
+            cardCurrentlyClicked = true;
+
         } else if (previousCardObject == currentCardObject)
         {
             ScaleDown(currentCardObject);
 
             previousCardObject = null;
             currentCardObject = null;
+
+            cardCurrentlyClicked = false;
         }
 
         if(cardObject != null)
@@ -120,6 +127,9 @@ public class CardPlacer : MonoBehaviour
             Debug.Log(currentCardObject);
             playerScript.UIController.RemoveCardElement(currentCardObject);
 
+            //Show no card is actively in play
+            cardCurrentlyClicked = false;
+
             ScaleDown(currentCardObject);
             currentCardObject = null;
             previousCardObject = null;
@@ -139,6 +149,27 @@ public class CardPlacer : MonoBehaviour
         } else 
         {
             playerScript.notificationController.CreateNotification("Card Placement Error", "That card can't be player on that tile, try another tile please");
+        }
+    }
+
+    public void HandleDiscard()
+    {
+        //Show no card is actively in play
+        cardCurrentlyClicked = false;
+
+        ScaleDown(currentCardObject);
+        currentCardObject = null;
+        previousCardObject = null;
+    }
+
+    public bool cardActive()
+    {
+        if(currentCardObject != null)
+        {
+            return true;
+        } else 
+        {
+            return false;
         }
     }
 

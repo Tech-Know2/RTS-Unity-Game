@@ -20,7 +20,7 @@ MonoBehaviour:
   cardEra: 1
   actionCard: 1
   isReligiousCard: 0
-  originalPlayer: 
+  originalPlayer: {fileID: 0}
   governmentRelated: 0
   assignsGovernment: 0
   governmentType: {fileID: 0}

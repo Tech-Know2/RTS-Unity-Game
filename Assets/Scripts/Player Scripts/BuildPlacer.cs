@@ -18,6 +18,8 @@ public class BuildPlacer : MonoBehaviour
 
     //Building vars
     public GameObject currentBuildSlot, previousBuildSlot, tileClicked;
+    public Material previewMat;
+    //public bool isPreviewing = false;
 
     public void Start()
     {
@@ -104,7 +106,7 @@ public class BuildPlacer : MonoBehaviour
         Building building = buildingDataHolder.attachedBuilding;
 
         // Make sure the building can be placed on this tile
-        if (currentBuildSlot != null && (building.acceptableBuildTiles.Contains(tileObject.tag) || building.acceptableBuildTiles.Count == 0) && ((building.requiresASettlement == true && tileUnderSettlement(tileObject)) || building.requiresASettlement == false))
+        if (currentBuildSlot != null && (building.acceptableBuildTiles.Contains(tileObject.tag) || building.acceptableBuildTiles.Count == 0) && ((building.requiresASettlement == true && tileUnderSettlement(tileObject)) || building.requiresASettlement == false) && (building.isASettlement == true && settlementNotInArea(tileObject) == true))
         {
             Debug.Log(currentBuildSlot);
             playerScript.UIController.RemoveBuildElement(currentBuildSlot);
@@ -143,4 +145,18 @@ public class BuildPlacer : MonoBehaviour
         return false;
     }
 
+    public bool settlementNotInArea(GameObject tile)
+    {
+        foreach (Building settlement in buildingEffectManager.settlementData)
+        {
+            if(settlement.settlementTiles.Contains(tile))
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        return true;
+    }
 }
