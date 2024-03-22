@@ -106,7 +106,7 @@ public class BuildPlacer : MonoBehaviour
         Building building = buildingDataHolder.attachedBuilding;
 
         // Make sure the building can be placed on this tile
-        if (currentBuildSlot != null && (building.acceptableBuildTiles.Contains(tileObject.tag) || building.acceptableBuildTiles.Count == 0) && ((building.requiresASettlement == true && tileUnderSettlement(tileObject)) || building.requiresASettlement == false) && (building.isASettlement == true && settlementNotInArea(tileObject) == true))
+        if (currentBuildSlot != null && isOccupied(tileObject) == false &&(building.acceptableBuildTiles.Contains(tileObject.tag) || building.acceptableBuildTiles.Count == 0) && ((building.requiresASettlement == true && tileUnderSettlement(tileObject) == true) || building.requiresASettlement == false) && ((building.isASettlement == true && settlementNotInArea(tileObject) == true) || building.isASettlement == false))
         {
             Debug.Log(currentBuildSlot);
             playerScript.UIController.RemoveBuildElement(currentBuildSlot);
@@ -114,6 +114,9 @@ public class BuildPlacer : MonoBehaviour
             ScaleDown(currentBuildSlot);
             currentBuildSlot = null;
             previousBuildSlot = null;
+
+            HexController hex = tileObject.GetComponent<HexController>();
+            hex.isOccupied = true;
 
             GameObject newBuilding = Instantiate(buildingDataHolder.buildingObject, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
 
@@ -138,8 +141,6 @@ public class BuildPlacer : MonoBehaviour
             {
                 return true;
             }
-
-            return false;
         }
 
         return false;
@@ -153,10 +154,23 @@ public class BuildPlacer : MonoBehaviour
             {
                 return false;
             }
-
-            return true;
         }
 
         return true;
+    }
+
+    public bool isOccupied(GameObject tile)
+    {
+        HexController hexData = tile.GetComponent<HexController>();
+
+        if(hexData.isOccupied == true)
+        {
+            playerScript.notificationController.CreateNotification("Tile Occupied", "You are unable to build there as there is a building already occuping that tile");
+
+            return true;
+        } else 
+        {
+            return false;
+        }
     }
 }

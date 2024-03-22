@@ -228,6 +228,10 @@ public class UIController : MonoBehaviour
         CardDataHolder cardDataHolder = cardSlot.GetComponent<CardDataHolder>();
         cardDataHolder.attachedCard = card;
 
+        //Set the color
+        Image panelImage = cardSlot.GetComponent<Image>();
+        panelImage.color = card.cardColor;
+
         //Set the values
         cardDataHolder.cardTitle.text = card.cardName;
         cardDataHolder.cardCategory.text = card.cardCategory;
@@ -248,6 +252,9 @@ public class UIController : MonoBehaviour
         //Get the CardDataHolder component a reference to it
         CardDataHolder cardDataHolder = cardSlot.GetComponent<CardDataHolder>();
         cardDataHolder.attachedCard = null;
+
+        Image panelImage = cardSlot.GetComponent<Image>();
+        panelImage.color = Color.white;
 
         //Set the values
         cardDataHolder.cardTitle.text = null;

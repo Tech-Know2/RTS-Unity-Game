@@ -30,7 +30,7 @@ public class EmpireManager : MonoBehaviour
         nameCreator = mapManagerObject.GetComponent<NameCreator>();
     }
 
-    public Empire SetUpEmpire(Empire empire)
+    public Empire SetUpEmpire(Empire empire, Player player)
     {
         playerColorSpot = gameManager.nextPlayerID + gameManager.randomDisplacement;
 
@@ -41,7 +41,9 @@ public class EmpireManager : MonoBehaviour
 
         empire.empireColor = rawEmpireColorOptions[playerColorSpot];
         ConnectToNameGen();
+
         empire.empireName = nameCreator.GenerateEmpireName();
+        empire.playerController = player;
 
         return empire;
     }

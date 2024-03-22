@@ -161,7 +161,7 @@ public class Player : NetworkBehaviour
         empireManager = GetComponent<EmpireManager>();
         empireManager.ConnectToPlayer(this);
         playerEmpire = empireManager.CreateEmpire();
-        empireManager.SetUpEmpire(playerEmpire);
+        empireManager.SetUpEmpire(playerEmpire, this);
         playerColor = playerEmpire.empireColor;
     }
 

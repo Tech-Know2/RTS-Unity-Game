@@ -17,6 +17,10 @@ public class EffectManagerList
     public Government governmentType; //Name of the government your effecting war support for
     public int turnsActive = 0; //Dont Mess With This Var. It stores how many turns that this card has been active.
     public bool requiresTiles; //Select true if the output of the cards effect is determined by tiles within the city
+    public bool requiresASettlement;
+    public bool globalEffect;
+    public List<string> effectTiles = new List<string>(); //List the tiles here that will determine scale of the effect
+    public Building settlementPlayedOn;
     public bool usesChance; //Mostly used for event cards to determine what should happen and the chance of it happening
 }
 

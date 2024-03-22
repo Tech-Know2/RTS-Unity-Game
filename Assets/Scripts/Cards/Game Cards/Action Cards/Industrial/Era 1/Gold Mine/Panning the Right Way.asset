@@ -1,0 +1,93 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 80bb3576c36a75c4aa2cacf86ac97e2a, type: 3}
+  m_Name: Panning the Right Way
+  m_EditorClassIdentifier: 
+  cardName: Panning the Right Way
+  description: Build 2 Gold mines in one of your cities to produce 15 gold per interval.
+    They will require 7 people to run per mine.
+  cardCategory: Industrial
+  cardColor: {r: 0.58431375, g: 0.0627451, b: 0.6745098, a: 1}
+  cardTech: Gold mine
+  cardEra: 1
+  actionCard: 1
+  isReligiousCard: 0
+  originalPlayer: {fileID: 0}
+  governmentRelated: 0
+  assignsGovernment: 0
+  governmentType: {fileID: 0}
+  isGovernmentWarSupportCard: 0
+  isAllianceCard: 0
+  governmentAllianceType: 
+  isDeclareWarCard: 0
+  governmentTypeForWar: 
+  isPeaceTreatyCard: 0
+  isPurchasable: 1
+  goldCost: 100
+  buildsSomething: 1
+  createAReligion: 0
+  effectDescriptionEditorDisplay: "Strings to determine the effects on the game:
+    Don't Alter Won't Change\nIf the effect only lasts for 1 turn, don't select the
+    Requires Multiple Turns Bool.\nIf it only lasts for one turn, don't put in anything\n\"Gold
+    Cost\" to take gold per turn\n\"Loyalty Cost\" to loss/take loyalty per turn\n\"Silver
+    Cost\" to take silver per turn\n\"Food Cost\" to take food per turn\n\"People
+    Cost\" to take people per turn\n\"War Propaganda Cost\" to increase War Support
+    per turn against a certain government\n\"Religion Cost\" to take away religion
+    from area\n\"Weariness Cost\" to effect war weariness\n\"Spread Distrust Cost\"
+    to effect the loyalty of your people \n\"Tech Cost\" to effect your empire's
+    tech points \n"
+  effectManagerList: []
+  religousEffectsEditorDisplay: "Strings to determine the effects on player religion\nIf
+    the effect only lasts for 1 turn, don't select the Requires Multiple Turns Bool.\nIf
+    it only lasts for one turn, don't put in anything\n\"Mono or Poly\" to determine
+    if mono or poly thestic\n\"Education Freedoms\" to allow or not allow educated
+    freedoms\n\"Religious Freedoms\" religious tolerance\n\"Stable Dedication\" stability
+    dedication\n\"Economic Dedication\" economic dedication\n\"Harvest Dedication\"
+    food dedication\n\"Religious Dedication\" religious dedication\n\"Academic Dedication\"
+    tech point dedication\n\"Holy War\" will start a holy war \n\"Allow Religious
+    Suzerain\" will grant control/influence/power over other empires religion \n\"Allow
+    Economic Suzerain\" will grant control/influence/power over other empires economy
+    \n\"Allow Academic Suzerain\" will grant control/influence/power over other empires
+    education \n\"Allow Politcal Suzerain\" will grant control/influence/power over
+    other empires politics \n\"Economic Yield\" will grant you income over follower
+    churches \n\"Religious Expansion\" will add followers to all non dominant cities
+    globally \n\"Religious Safety\" will add followers to all dominant cities globally
+    \n"
+  suzerainEffectTypes: 'Strings to determine the suzerzin effect
+
+    If the effect
+    only lasts for 1 turn, don''t select the Requires Multiple Turns Bool.
+
+    If
+    it only lasts for one turn, don''t put in anything
+
+    "Academic" education
+    based suzerain card
+
+    "Political" political based suzerain card
+
+    "Economic"
+    economic based suzerain card
+
+'
+  religoiusEffectLists: []
+  buildingGameObjects:
+  - {fileID: 904278415746703541, guid: 683e46c369aba184fafe2d63521043a9, type: 3}
+  - {fileID: 904278415746703541, guid: 683e46c369aba184fafe2d63521043a9, type: 3}
+  desierdTileString: "Strings to determine the effects on the game: Don't Alter Won't
+    Change\n\"Indicates which tile the card can effect\" \n\"Deep Water\" \n\"Shallow
+    Water\" \n\"Sand\" \n\"Grass\" \n\"Mountain\" \n"
+  desiredTilesList:
+  - Sand
+  - Grass
+  - Mountain
+  units: []

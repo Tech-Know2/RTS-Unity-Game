@@ -13,13 +13,14 @@ public class Empire : ScriptableObject
     public bool isPlayerControlled;
     public bool isVassal = false;
     public Empire leigeEmpire;
+    public Player playerController;
 
     //Empire Wealth
     public int empireGold;
     public float empireTechPoints;
     
     //Empire Lands
-    public List<City> empireSettlements = new List<City>();
+    public List<Building> empireSettlements = new List<Building>();
     public List<Building> empireBuildings = new List<Building>();
     public List<Unit> empireUnits = new List<Unit>();
     public List<GameObject> empireTiles = new List<GameObject>();
@@ -29,6 +30,7 @@ public class Empire : ScriptableObject
     public List<Empire> alliedEmpires = new List<Empire>();
     public List<Empire> warringEmpires = new List<Empire>();
     public List<Empire> neutralEmpires = new List<Empire>();
+    public List<Empire> vassalEmpires = new List<Empire>();
 
     //Empire Religion
     public List<Religion> empireReligions = new List<Religion>();

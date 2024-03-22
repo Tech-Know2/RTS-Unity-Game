@@ -166,6 +166,30 @@ public class CardEffectManager : MonoBehaviour
     //List of Standard Effects
     public void GoldCost(EffectManagerList effect)
     {
+        if(effect.requiresTiles == true)
+        {
+            //Get tiles that are the same type the effect needs, then calculate the effect value
+            int tileCount = 0;
+
+            for (int i = 0; i < effect.settlementPlayedOn.settlementTiles.Count; i++)
+            {
+                for(int x = 0; x < effect.effectTiles.Count; x++)
+                {
+                    if(effect.settlementPlayedOn.settlementTiles[i].tag == effect.effectTiles[x])
+                    {
+                        tileCount++;
+                    }
+                }
+            }
+
+            playerScript.gameManager.playerGold = effect.effectCost * tileCount;
+        }
+
+        if(effect.globalEffect == true)
+        {
+            playerScript.gameManager.playerGold += effect.effectCost * playerScript.buildingEffectManager.settlementData.Count;
+        }
+
         if(effect.usesChance == true)
         {
             if(RNG() == true)
@@ -179,7 +203,7 @@ public class CardEffectManager : MonoBehaviour
         } else 
         {
             playerScript.gameManager.playerGold += effect.effectCost;
-        }        
+        }
     }
 
     public void SilverCost(EffectManagerList effect)

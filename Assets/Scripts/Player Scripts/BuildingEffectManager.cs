@@ -51,6 +51,9 @@ public class BuildingEffectManager : MonoBehaviour
         BuildData objBuildData = obj.GetComponent<BuildData>();
         objBuildData.buildData = data;
 
+        //Do building effects
+        CreateBuilding(data);
+
         playerScript.notificationController.CreateNotification("Building Built", data.buildingName + " has been built in your empire");
     }
 
@@ -206,9 +209,12 @@ public class BuildingEffectManager : MonoBehaviour
     //Functions to calculate and manage building needs
     public void CreateBuilding(Building data) //Does costs, production, assigning, etc
     {
-        Building settlement = data.buildingsParentSettlement;
+        if(data.requiresASettlement == true)
+        {
+            Building settlement = data.buildingsParentSettlement;
 
-        settlement.settlementPopulation -= data.peopleInitialCost;
+            settlement.settlementPopulation -= data.peopleInitialCost;
+        }
     }
 
     public void BuildingUpKeep(Building data)
@@ -234,7 +240,7 @@ public class BuildingEffectManager : MonoBehaviour
             Building settlement = data.buildingsParentSettlement;
 
             playerScript.gameManager.playerGold += data.goldProduction;
-            settlement.settlementFood -= data.foodProduction;
+            settlement.settlementFood += data.foodProduction;
             playerScript.gameManager.playerTechPoints += data.techPointProduction;
 
             //Object production

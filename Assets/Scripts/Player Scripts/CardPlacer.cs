@@ -123,6 +123,16 @@ public class CardPlacer : MonoBehaviour
 
         if(currentCardObject != null && ((card.desiredTilesList.Contains(tileObject.tag) || card.desiredTilesList.Count == 0) && ((requiresSettlement(card) == true && tilesUnderSettlement(tileObject) == true) || requiresSettlement(card) == false)))
         {
+            for (int i = 0; i < card.effectManagerList.Count; i++)
+            {
+                EffectManagerList effect = card.effectManagerList[i];
+
+                if(effect.requiresTiles == true)
+                {
+                    effect.settlementPlayedOn = getSettlement(tileObject);
+                }
+            }
+
             //Remove that card from the data in the UI controller
             Debug.Log(currentCardObject);
             playerScript.UIController.RemoveCardElement(currentCardObject);
@@ -177,7 +187,7 @@ public class CardPlacer : MonoBehaviour
     {
         foreach (EffectManagerList effect in data.effectManagerList)
         {
-            if(effect.requiresTiles == true)
+            if(effect.requiresASettlement == true)
             {
                 return true;
             }
@@ -194,10 +204,21 @@ public class CardPlacer : MonoBehaviour
             {
                 return true;
             }
-
-            return false;
         }
 
         return false;
+    }
+
+    private Building getSettlement(GameObject tile)
+    {
+        foreach (Building settlement in buildingEffectManager.settlementData)
+        {
+            if(settlement.settlementTiles.Contains(tile))
+            {
+                return settlement;
+            }
+        }
+
+        return null;
     }
 }

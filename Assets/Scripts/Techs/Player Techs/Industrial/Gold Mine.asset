@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7887891a59f2e4d4da6b1e5e7d53af4f, type: 3}
+  m_Name: Gold Mine
+  m_EditorClassIdentifier: 
+  techName: Gold Mine
+  description: Start placing buildings specifically for the growth of your economy
+    and empire.
+  techType: Industrial
+  techColor: {r: 0.627451, g: 0.25490198, b: 0.6901961, a: 1}
+  techEra: 1
+  isResearched: 0
+  techCards:
+  - {fileID: 11400000, guid: 947a39f4ee3f311439e12ca1fb4d76d2, type: 2}
+  - {fileID: 11400000, guid: b57409c72d72a814e9bcca11f007473c, type: 2}

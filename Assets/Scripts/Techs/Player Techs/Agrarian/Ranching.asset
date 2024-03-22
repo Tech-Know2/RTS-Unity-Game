@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Allows you to strat producing horses for military purposes and cattle
     for food.
   techType: Agrarian
-  techColor: {r: 0.047058824, g: 0.654902, b: 0.5372549, a: 0}
+  techColor: {r: 0.047058824, g: 0.654902, b: 0.5372549, a: 1}
   techEra: 1
   isResearched: 0
   techCards: []

@@ -18,10 +18,11 @@ MonoBehaviour:
   goldUpKeep: 0
   peopleUpKeep: 0
   foodUpkeep: 0
-  health: 0
+  health: 100
   goldProduction: 0
   foodProduction: 0
   techPointProduction: 0
+  buildingsParentSettlement: {fileID: 0}
   requiresASettlement: 0
   isASettlement: 1
   settlementName: 
@@ -29,6 +30,19 @@ MonoBehaviour:
   - Sand
   - Grass
   - Mountain
+  isCapital: 0
+  settlementObjectInventory: []
+  settlementReligiousFollowers: []
+  settlementUnits: []
+  settlementReligions: []
+  settlementBuildings: []
+  settlementTiles: []
+  mainReligion: {fileID: 0}
+  settlementFood: 50
+  settlementLevel: 1
+  settlementPopulation: 25
+  settlementGoldProduction: 0
+  settlementTechPointProduction: 0
   producableObjects: []
   isReligiousTrainingRelated: 0
   isPath: 0

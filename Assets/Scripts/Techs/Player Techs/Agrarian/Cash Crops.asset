@@ -16,7 +16,7 @@ MonoBehaviour:
   description: Provides you with the capability of taking your settlement to the
     next level on gold production.
   techType: Agrarian
-  techColor: {r: 0.047058824, g: 0.654902, b: 0.5372549, a: 0}
+  techColor: {r: 0.047058824, g: 0.654902, b: 0.5372549, a: 1}
   techEra: 2
   isResearched: 0
   techCards: []

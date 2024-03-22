@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e096d734f5fb847b5a2950148be364, type: 3}
+  m_Name: Gold Mine
+  m_EditorClassIdentifier: 
+  buildingName: Gold Mine
+  buildingDescription: Build a gold mine in one of your cities to produce 15 gold
+    per interval. It requires 7 people to run.
+  peopleInitialCost: 5
+  goldUpKeep: 0
+  peopleUpKeep: 7
+  foodUpkeep: 0
+  health: 0
+  goldProduction: 15
+  foodProduction: 0
+  techPointProduction: 0
+  buildingsParentSettlement: {fileID: 0}
+  requiresASettlement: 1
+  isASettlement: 0
+  settlementName: 
+  acceptableBuildTiles:
+  - Grass
+  - Sand
+  - Mountain
+  isCapital: 0
+  settlementObjectInventory: []
+  settlementReligiousFollowers: []
+  settlementUnits: []
+  settlementReligions: []
+  settlementBuildings: []
+  settlementTiles: []
+  mainReligion: {fileID: 0}
+  settlementFood: 0
+  settlementLevel: 0
+  settlementPopulation: 0
+  settlementGoldProduction: 0
+  settlementTechPointProduction: 0
+  producableObjects: []
+  isReligiousTrainingRelated: 0
+  isPath: 0
+  isDefense: 0
+  isGate: 0
+  isBridge: 0
+  isMountable: 0
+  isSightCapable: 0
+  sightRange: 0
