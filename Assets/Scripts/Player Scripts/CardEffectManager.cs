@@ -256,47 +256,50 @@ public class CardEffectManager : MonoBehaviour
     {
         if(passedCard.assignsGovernment == true)
         {
-            AssignsGovernment();
+            AssignsGovernment(passedCard);
 
         } else if (passedCard.isGovernmentWarSupportCard == true)
         {
-            GovernmentWarSupportEffect();
+            GovernmentWarSupportEffect(passedCard);
 
         } else if (passedCard.isAllianceCard == true)
         {
-            AllianceCard();
+            AllianceCard(passedCard);
 
         } else if (passedCard.isDeclareWarCard == true)
         {
-            AllianceCard();
+            AllianceCard(passedCard);
 
         } else if (passedCard.isPeaceTreatyCard == true)
         {
-            PeaceTreaty();
+            PeaceTreaty(passedCard);
         }
     }
 
-    public void AssignsGovernment()
+    public void AssignsGovernment(Card data)
     {
-        //Needs a government
+        if(playerScript.playerGovernment == null)
+        {
+            playerScript.playerGovernment = data.governmentType;
+        }
     }
 
-    public void GovernmentWarSupportEffect()
-    {
-        //Needs an opposing civ
-    }
-
-    public void AllianceCard()
+    public void GovernmentWarSupportEffect(Card data)
     {
         //Needs an opposing civ
     }
 
-    public void WarDecleration()
+    public void AllianceCard(Card data)
     {
         //Needs an opposing civ
     }
 
-    public void PeaceTreaty()
+    public void WarDecleration(Card data)
+    {
+        //Needs an opposing civ
+    }
+
+    public void PeaceTreaty(Card data)
     {
         //Needs an opposing civ
     }

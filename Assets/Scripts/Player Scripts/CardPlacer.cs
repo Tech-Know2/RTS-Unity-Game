@@ -81,8 +81,6 @@ public class CardPlacer : MonoBehaviour
         Vector3 currentScale = obj.transform.localScale;
         Vector3 newScale = currentScale + scalingFactor;
         obj.transform.localScale = newScale;
-
-        Debug.Log("Scaled up");
     }
 
     private void ScaleDown(GameObject obj)
@@ -90,8 +88,6 @@ public class CardPlacer : MonoBehaviour
         Vector3 currentScale = obj.transform.localScale;
         Vector3 newScale = currentScale - scalingFactor;
         obj.transform.localScale = newScale;
-
-        Debug.Log("Scaled down");
     }
 
     public void Update()

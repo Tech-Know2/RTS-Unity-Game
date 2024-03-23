@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7887891a59f2e4d4da6b1e5e7d53af4f, type: 3}
+  m_Name: Government
+  m_EditorClassIdentifier: 
+  techName: Government
+  description: Allows your empire to formalize its structure into a government.
+  techType: Academic and Religious
+  techColor: {r: 0.98039216, g: 0.78039217, b: 0.0627451, a: 1}
+  techEra: 2
+  isResearched: 0
+  techCards:
+  - {fileID: 11400000, guid: acae098fbb8398142aea8e49747a3432, type: 2}
+  - {fileID: 11400000, guid: d861964e5e50cfe47ad81ac864003cc3, type: 2}
+  - {fileID: 11400000, guid: 5de80d8fc77e99f44981ceb6269e609f, type: 2}
+  - {fileID: 11400000, guid: 7ae58360d6242414bac314133f2dcaf2, type: 2}
+  - {fileID: 11400000, guid: 0fb09af95f3470e45bb488bb6be18125, type: 2}
+  - {fileID: 11400000, guid: f1d58e653b8f6e04a87158a25742ada9, type: 2}
+  - {fileID: 11400000, guid: f933ec630fb65844fb706ef261c87aee, type: 2}
+  - {fileID: 11400000, guid: a209638aa84420c4f94224190ee410b8, type: 2}

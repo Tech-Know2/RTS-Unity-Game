@@ -22,9 +22,8 @@ public class AuctionHouseController : MonoBehaviour
     public int cardsPerPage = 16;
     public int discardCost = 25;
     public int totalPages;
-    public int currentPage;
+    public int currentPage = 0;
     public bool houseOpen = false;
-    public bool firstTime = true;
     public TextMeshProUGUI currentPageText, totalPagesText;
 
     //Other UI Objs
@@ -38,7 +37,7 @@ public class AuctionHouseController : MonoBehaviour
 
     public void Update()
     {
-        totalPages = cards.Count / cardsPerPage;
+        totalPages = 1 + cards.Count / cardsPerPage; //So that it still shows there being one page when there areno cards, instead of starting at 0 it starts at 1
 
         int current = currentPage + 1;
 
@@ -53,20 +52,30 @@ public class AuctionHouseController : MonoBehaviour
             ConnectToPlayer();
         }
 
-        if(playerScript != null && playerScript.cardPlacer.cardActive() == true && uiController.playerScript.gameManager.playerGold >= 25)
+        CardDataHolder cardDataHolder = playerScript.cardPlacer.currentCardObject.GetComponent<CardDataHolder>();
+        Card card = cardDataHolder.attachedCard;
+
+        if(playerScript.cardPlacer.cardActive() == true && uiController.playerScript.gameManager.playerGold >= 25 && card.isPurchasable == true) //Card can be purchased
         {
             uiController.playerScript.gameManager.playerGold -= 25;
 
-            CardDataHolder cardDataHolder = playerScript.cardPlacer.currentCardObject.GetComponent<CardDataHolder>();
-            Card card = cardDataHolder.attachedCard;
+            card.originalPlayer = playerScript;
 
             cards.Add(card);
 
-            uiController.RemoveElement(card);
+            uiController.RemoveCardElement(playerScript.cardPlacer.currentCardObject);
             playerScript.cardPlacer.HandleDiscard();
 
             uiController.notificationController.CreateNotification("Card Moved to Auction", "The card " + card.cardName + " was moved to the auction house to be sold");
-        } else 
+
+        } else if (playerScript.cardPlacer.cardActive() == true && uiController.playerScript.gameManager.playerGold >= 25 && card.isPurchasable == true) //Card can't be purchased
+        {
+            uiController.playerScript.gameManager.playerGold -= 25;
+
+            uiController.RemoveCardElement(playerScript.cardPlacer.currentCardObject);
+            playerScript.cardPlacer.HandleDiscard();
+
+        }else
         {
             uiController.notificationController.CreateNotification("Error in Discard", "Unable to discard for some reason");
         }
@@ -112,19 +121,19 @@ public class AuctionHouseController : MonoBehaviour
 
     public void AuctionHouseButton()
     {
+        if(playerScript == null)
+        {
+            ConnectToPlayer();
+        }
+
         if(houseOpen == false)
         {
-            //Adds the player to the list of players
-            if(firstTime == true && playerScript != null)
-            {
-                //players.Add(playerScript);
-                firstTime = false;
-            }
-
-            houseOpen = true;
-
             CloseAll();
             OpenHouse();
+
+            UpdateDisplays();
+
+            houseOpen = true;
 
         } else 
         {
@@ -149,11 +158,13 @@ public class AuctionHouseController : MonoBehaviour
     private void OpenHouse()
     {
         auctionHouse.SetActive(true);
+        playerScript.MovementAllowedSetter(false);
     }
 
     private void CloseHouse()
     {
         auctionHouse.SetActive(false);
+        playerScript.MovementAllowedSetter(true);
     }
 
     public void PurchaseCard()
@@ -161,5 +172,8 @@ public class AuctionHouseController : MonoBehaviour
         int purchaseCost = 75 /* ( sanctions + alliances, etc) */; //Work on later
 
         uiController.playerScript.gameManager.playerGold -= purchaseCost;
+
+        //work on the puchase methods
+        //setactive(false), add to hand, etc
     }
 }

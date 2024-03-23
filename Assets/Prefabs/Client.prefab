@@ -132,6 +132,7 @@ MonoBehaviour:
   _addedNetworkObject: {fileID: 4452702601904455995}
   _networkObjectCache: {fileID: 4452702601904455995}
   player: {fileID: 0}
+  playerObject: {fileID: 683422093500024146, guid: 537883df4ad2f294cbb2dd86c66a5fd2, type: 3}
   UIObject: {fileID: 0}
   UIController: {fileID: 0}
   cardDealer: {fileID: -7064104150945172825}

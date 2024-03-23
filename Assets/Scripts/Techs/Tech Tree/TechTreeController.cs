@@ -4,6 +4,13 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
+[System.Serializable]
+public class BranchData
+{
+    public string branchName;
+    public List<GameObject> eraDisplays = new List<GameObject>();
+}
+
 public class TechTreeController : MonoBehaviour
 {
     public UIController uiController;
@@ -11,9 +18,14 @@ public class TechTreeController : MonoBehaviour
     public GameObject techTreeUI;
     private Image buttonImage;
     public List<Button> branchButtons = new List<Button>();
-    public List<GameObject> branchObjects = new List<GameObject>();
+    public List<BranchData> branchObjects = new List<BranchData>();
     public bool allowedToSwitchBranches = false;
     public Tech requiredTech;
+    public int branch = 0;
+    public TextMeshProUGUI currentEraDisplay; //Era on scroll
+    public TextMeshProUGUI gameEraDisplay; //Era of the game
+
+    public int currentEra = 1;
 
     public void Start()
     {
@@ -22,15 +34,23 @@ public class TechTreeController : MonoBehaviour
         CloseTechTree();
     }
 
+    public void Update()
+    {
+        gameEraDisplay.text = uiController.playerScript.gameManager.gameEra.ToString();
+    }
+
     public void OpenTechTree()
     {
         mainUI.SetActive(false);
         techTreeUI.SetActive(true);
 
+        currentEra = 1;
+        currentEraDisplay.text = currentEra.ToString();
+
         if(canSwitch() == false)
         {
             CloseAllBranches();
-            branchObjects[0].SetActive(true);
+            branchObjects[0].eraDisplays[0].SetActive(true);
         } else 
         {
             SwitchBranches();
@@ -55,9 +75,17 @@ public class TechTreeController : MonoBehaviour
     {
         for(int i = 0; i < branchObjects.Count; i++)
         {
-            branchObjects[i].SetActive(false);
+            for (int j = 0; j < branchObjects[i].eraDisplays.Count; j++)
+            {
+                branchObjects[i].eraDisplays[j].SetActive(false);
+            }
         }
+
+        currentEra = 1;
+
+        currentEraDisplay.text = currentEra.ToString();
     }
+
 
     public void SwitchBranches()
     {
@@ -68,7 +96,7 @@ public class TechTreeController : MonoBehaviour
             // The clicked button's GameObject can be obtained from the current event
             GameObject buttonObject = UnityEngine.EventSystems.EventSystem.current.currentSelectedGameObject;
 
-            int branch = 0;
+            branch = 0;
 
             for (int i = 0; i < branchButtons.Count; i++)
             {
@@ -78,12 +106,15 @@ public class TechTreeController : MonoBehaviour
                 }
             }
 
-            branchObjects[branch].SetActive(true);
-            Debug.Log(branchObjects[branch]);
+            branchObjects[branch].eraDisplays[currentEra - 1].SetActive(true);
         }else
         {
             uiController.playerScript.notificationController.CreateNotification("Can't Change Branch", "You must first research the settlement tech in order to switch to other branches");
         }
+
+        currentEra = 1;
+
+        currentEraDisplay.text = currentEra.ToString();
     }
 
     private bool canSwitch()
@@ -94,6 +125,38 @@ public class TechTreeController : MonoBehaviour
         } else 
         {
             return false;
+        }
+    }
+
+    public void UpdateEraDisplay()
+    {
+        for(int i = 0; i < branchObjects[branch].eraDisplays.Count; i++)
+        {
+            branchObjects[branch].eraDisplays[i].SetActive(false);
+        }
+
+        branchObjects[branch].eraDisplays[currentEra - 1].SetActive(true);
+
+        currentEraDisplay.text = currentEra.ToString();
+    }
+
+    public void EraIncrease()
+    {
+        if(currentEra < 3 && currentEra < branchObjects[branch].eraDisplays.Count)
+        {
+            currentEra++;
+            UpdateEraDisplay();
+        }
+
+        currentEraDisplay.text = currentEra.ToString();
+    }
+
+    public void EraDecrease()
+    {
+        if(currentEra > 1)
+        {
+            currentEra--;
+            UpdateEraDisplay();
         }
     }
 }

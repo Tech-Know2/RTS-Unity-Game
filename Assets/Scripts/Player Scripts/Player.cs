@@ -12,6 +12,7 @@ public class Player : NetworkBehaviour
 {
     //Script Connections
     public Player player;
+    public GameObject playerObject;
     public GameObject UIObject;
     public UIController UIController;
     public CardDealer cardDealer;
@@ -153,6 +154,10 @@ public class Player : NetworkBehaviour
         }
 
         currentInterval = interval;
+
+        GameObject newObj = Instantiate(playerObject, new Vector3(0, 0, 0), Quaternion.identity);
+
+        playerObject = newObj;
     }
 
     public void PlayerEmpireSetup()
@@ -347,6 +352,17 @@ public class Player : NetworkBehaviour
             }
         }
 
+    }
+
+    public void MovementAllowedSetter(bool value)
+    {
+        cameraMovementAllowed = value;
+        cameraPanningAllowed = value;
+    }
+
+    public void ParentToMe(GameObject obj)
+    {
+        obj.transform.SetParent(playerObject.transform);
     }
 
     void HandelMovementInput()

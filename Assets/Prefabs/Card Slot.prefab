@@ -369,6 +369,7 @@ MonoBehaviour:
   cardDescription: {fileID: 5918657860620639791}
   uiController: {fileID: 0}
   player: {fileID: 0}
+  backgroundImage: {fileID: 2752219420264114584}
 --- !u!1 &5918657860348455038
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,7 +8,7 @@ public class ACDisplay : MonoBehaviour
 {
     public TextMeshProUGUI cardName, cardDescription;
     public Card card;
-    public Player originalPlayer;
+    public Image backgroundImage;
 
     public void Start()
     {
@@ -17,18 +17,19 @@ public class ACDisplay : MonoBehaviour
 
     public void PutOnDisplay(Card data)
     {
-        cardName.text = data.cardName;
-        cardDescription.text = data.description;
-        originalPlayer = data.originalPlayer;
+        Debug.Log(data + "Passed to AC Display for auction house");
 
         gameObject.SetActive(true);
+
+        cardName.text = data.cardName;
+        cardDescription.text = data.description;
+        backgroundImage.color = data.cardColor;
     }
 
     //remove the card once purchased
     public void PurchaseCard()
     {
         card = null;
-        originalPlayer = null;
 
         cardName.text= null;
         cardDescription.text = null;

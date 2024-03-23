@@ -59,8 +59,6 @@ public class BuildPlacer : MonoBehaviour
         Vector3 currentScale = obj.transform.localScale;
         Vector3 newScale = currentScale + scalingFactor;
         obj.transform.localScale = newScale;
-
-        Debug.Log("Scaled up");
     }
 
     private void ScaleDown(GameObject obj)
@@ -68,8 +66,6 @@ public class BuildPlacer : MonoBehaviour
         Vector3 currentScale = obj.transform.localScale;
         Vector3 newScale = currentScale - scalingFactor;
         obj.transform.localScale = newScale;
-
-        Debug.Log("Scaled down");
     }
 
     public void Update()
@@ -119,6 +115,9 @@ public class BuildPlacer : MonoBehaviour
             hex.isOccupied = true;
 
             GameObject newBuilding = Instantiate(buildingDataHolder.buildingObject, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
+            
+            //Parent to the player
+            playerScript.ParentToMe(newBuilding);
 
             if(building.isASettlement == true)
             {

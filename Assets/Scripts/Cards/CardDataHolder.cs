@@ -10,6 +10,7 @@ public class CardDataHolder : MonoBehaviour
     public TextMeshProUGUI cardTitle, cardCategory, cardEra, cardDescription;
     public UIController uiController;
     public Player player;
+    public Image backgroundImage;
 
     public void Start()
     {
@@ -48,6 +49,14 @@ public class CardDataHolder : MonoBehaviour
         {
             GetPlayerScript();
             GetCard();
+        }
+    }
+
+    public void SetColor(Color color)
+    {
+        if (backgroundImage != null)
+        {
+            backgroundImage.color = color;
         }
     }
 }

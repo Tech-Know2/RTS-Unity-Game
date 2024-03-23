@@ -10,70 +10,41 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 80bb3576c36a75c4aa2cacf86ac97e2a, type: 3}
-  m_Name: Game Hunting
+  m_Name: Fascist
   m_EditorClassIdentifier: 
-  cardName: Game Hunting
-  description: Gather 2 food from each of the plains tiles around a city. Requires
-    10 people.
-  cardCategory: Agrarian
-  cardColor: {r: 0.047058824, g: 0.654902, b: 0.5372549, a: 1}
-  cardTech: Gathering and Hunting
-  cardEra: 1
+  cardName: Fascist
+  description: Allows you to create a government that follows this structure.
+  cardCategory: Academic and Religious
+  cardColor: {r: 0.98039216, g: 0.78039217, b: 0.0627451, a: 1}
+  cardTech: Government
+  cardEra: 2
   actionCard: 1
   isReligiousCard: 0
   originalPlayer: {fileID: 0}
-  governmentRelated: 0
-  assignsGovernment: 0
-  governmentType: {fileID: 0}
+  governmentRelated: 1
+  assignsGovernment: 1
+  governmentType: {fileID: 11400000, guid: af00262adbc98e64ba4fa5120537fa18, type: 2}
   isGovernmentWarSupportCard: 0
   isAllianceCard: 0
   governmentAllianceType: 
   isDeclareWarCard: 0
   governmentTypeForWar: 
   isPeaceTreatyCard: 0
-  isPurchasable: 1
-  goldCost: 100
+  isPurchasable: 0
+  goldCost: 0
   buildsSomething: 0
   createAReligion: 0
   effectDescriptionEditorDisplay: "Strings to determine the effects on the game:
     Don't Alter Won't Change\nIf the effect only lasts for 1 turn, don't select the
     Requires Multiple Turns Bool.\nIf it only lasts for one turn, don't put in anything\n\"Gold
-    Cost\" to take gold per turn\n\"Loyalty Cost\" to take loyalty per turn\n\"Silver
+    Cost\" to take gold per turn\n\"Loyalty Cost\" to loss/take loyalty per turn\n\"Silver
     Cost\" to take silver per turn\n\"Food Cost\" to take food per turn\n\"People
-    Cost\" to take people per turn\n\"War Support Cost\" to increase War Support
+    Cost\" to take people per turn\n\"War Propaganda Cost\" to increase War Support
     per turn against a certain government\n\"Religion Cost\" to take away religion
-    from area\n\"Weariness Cost\" to effect war weariness\n\"Loyalty Cost\" to effect
-    the loyalty of your people \n\"Tech Cost\" to effect your empire's tech points
-    \n"
-  effectManagerList:
-  - requiresMultipleTurns: 0
-    goesForever: 0
-    turnEffectLength: 1
-    effectCost: -10
-    costType: People Cost
-    religionName: 
-    governmentType: {fileID: 0}
-    turnsActive: 0
-    requiresTiles: 0
-    requiresASettlement: 0
-    globalEffect: 0
-    effectTiles: []
-    settlementPlayedOn: {fileID: 0}
-    usesChance: 0
-  - requiresMultipleTurns: 0
-    goesForever: 0
-    turnEffectLength: 1
-    effectCost: 2
-    costType: Food Cost
-    religionName: 
-    governmentType: {fileID: 0}
-    turnsActive: 0
-    requiresTiles: 1
-    requiresASettlement: 0
-    globalEffect: 0
-    effectTiles: []
-    settlementPlayedOn: {fileID: 0}
-    usesChance: 0
+    from area\n\"Weariness Cost\" to effect war weariness\n\"Spread Distrust Cost\"
+    to effect the loyalty of your people \n\"Tech Cost\" to effect your empire's
+    tech points \n"
+  effectManagerList: []
   religousEffectsEditorDisplay: "Strings to determine the effects on player religion\nIf
     the effect only lasts for 1 turn, don't select the Requires Multiple Turns Bool.\nIf
     it only lasts for one turn, don't put in anything\n\"Mono or Poly\" to determine
@@ -112,6 +83,5 @@ MonoBehaviour:
   desierdTileString: "Strings to determine the effects on the game: Don't Alter Won't
     Change\n\"Indicates which tile the card can effect\" \n\"Deep Water\" \n\"Shallow
     Water\" \n\"Sand\" \n\"Grass\" \n\"Mountain\" \n"
-  desiredTilesList:
-  - Grass
+  desiredTilesList: []
   units: []
