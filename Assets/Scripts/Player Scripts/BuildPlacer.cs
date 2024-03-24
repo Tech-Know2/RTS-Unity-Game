@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FishNet.Object;
 
-public class BuildPlacer : MonoBehaviour
+public class BuildPlacer : NetworkBehaviour
 {
     //Script Connections
     public BuildingEffectManager buildingEffectManager;
@@ -20,6 +21,16 @@ public class BuildPlacer : MonoBehaviour
     public GameObject currentBuildSlot, previousBuildSlot, tileClicked;
     public Material previewMat;
     //public bool isPreviewing = false;
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if(!base.IsOwner)
+        {
+            GetComponent<BuildPlacer>().enabled = false;
+        }
+    }
 
     public void Start()
     {
@@ -102,33 +113,43 @@ public class BuildPlacer : MonoBehaviour
         Building building = buildingDataHolder.attachedBuilding;
 
         // Make sure the building can be placed on this tile
-        if (currentBuildSlot != null && isOccupied(tileObject) == false &&(building.acceptableBuildTiles.Contains(tileObject.tag) || building.acceptableBuildTiles.Count == 0) && ((building.requiresASettlement == true && tileUnderSettlement(tileObject) == true) || building.requiresASettlement == false) && ((building.isASettlement == true && settlementNotInArea(tileObject) == true) || building.isASettlement == false))
+        if (currentBuildSlot != null && isOccupied(tileObject) == false &&(building.acceptableBuildTiles.Contains(tileObject.tag) || building.acceptableBuildTiles.Count == 0) && ((building.requiresASettlement == true && tileUnderSettlement(tileObject) == true) || building.requiresASettlement == false) && ((building.isASettlement == true && settlementNotInArea(tileObject) == true) || building.isASettlement == false) && (hasPopRequired(tileObject, building) == true))
         {
-            Debug.Log(currentBuildSlot);
-            playerScript.UIController.RemoveBuildElement(currentBuildSlot);
-
-            ScaleDown(currentBuildSlot);
-            currentBuildSlot = null;
-            previousBuildSlot = null;
-
-            HexController hex = tileObject.GetComponent<HexController>();
-            hex.isOccupied = true;
-
-            GameObject newBuilding = Instantiate(buildingDataHolder.buildingObject, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
+            SpawnBuilding(building, buildingDataHolder.buildingObject, tileObject, yHeight, playerScript);
             
-            //Parent to the player
-            playerScript.ParentToMe(newBuilding);
-
-            if(building.isASettlement == true)
-            {
-                playerScript.buildingEffectManager.AddSettlement(newBuilding);
-            } else 
-            {
-                playerScript.buildingEffectManager.AddBuilding(newBuilding, tileObject);
-            }
         } else 
         {
             playerScript.notificationController.CreateNotification("Can't Build There", "This building can not be built on that tile, please try again");
+        }
+    }
+
+    [ServerRpc]
+    private void SpawnBuilding(Building building, GameObject buildingObj, GameObject tileObject, float yHeight, Player player)
+    {
+        Debug.Log(currentBuildSlot);
+        player.UIController.RemoveBuildElement(currentBuildSlot);
+
+        ScaleDown(currentBuildSlot);
+        currentBuildSlot = null;
+        previousBuildSlot = null;
+
+        HexController hex = tileObject.GetComponent<HexController>();
+        hex.ChangeOccupancy(true);
+
+        GameObject newBuilding = Instantiate(buildingObj, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
+        
+        //Have it be spawned on all clients pov
+        base.Spawn(newBuilding, base.Owner);
+            
+        //Parent to the player
+        player.ParentToMe(newBuilding);
+
+        if(building.isASettlement == true)
+        {
+            player.buildingEffectManager.AddSettlement(newBuilding);
+        } else 
+        {
+            player.buildingEffectManager.AddBuilding(newBuilding, tileObject);
         }
     }
 
@@ -170,6 +191,38 @@ public class BuildPlacer : MonoBehaviour
         } else 
         {
             return false;
+        }
+    }
+
+    public Building getSettlementData(GameObject tile)
+    {
+        foreach (Building settlement in buildingEffectManager.settlementData)
+        {
+            if(settlement.settlementTiles.Contains(tile))
+            {
+                return settlement;
+            }
+        }
+
+        return null;
+    }
+
+    public bool hasPopRequired(GameObject tile, Building building)
+    {
+        Building settlement = getSettlementData(tile);
+
+        if(building.peopleInitialCost != 0)
+        {
+            if(settlement.settlementPopulation >= building.peopleInitialCost)
+            {
+                return true;
+            } else 
+            {
+                return false;
+            }
+        } else 
+        {
+            return true;
         }
     }
 }

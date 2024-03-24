@@ -18,6 +18,11 @@ public class BuildingEffectManager : MonoBehaviour
 
     //Player Empire Vars
     private Empire playerEmpire;
+    
+    //Settlement Upgrade Vars
+    public int peoplePerSettlementUpgrade = 50;
+    public int buildingsPerSettlementUpgrade = 6;
+    public int maxSettlementLevel = 3;
 
     public void Start()
     {
@@ -116,9 +121,32 @@ public class BuildingEffectManager : MonoBehaviour
     //Functions to calculate and manage settlement needs
     public void UpdatePopandFood(Building data)
     {
-        //data.settlementFood -= data.settlementPopulation;
-        //data.settlementPopulation += (int) data.settlementFood / 2; //2 food per person
+        /*int foodConsumed = data.settlementPopulation * 2; // 1 pop consumes 2 food
+
+        // Ensure that food consumption does not exceed available food
+        if (foodConsumed > data.settlementFood)
+        {
+            foodConsumed = data.settlementFood;
+        }
+
+        // Deduct food consumed
+        data.settlementFood -= foodConsumed;
+
+        // Calculate food available for population growth (half of remaining food after consumption)
+        int foodForGrowth = (data.settlementFood) / 2;
+
+        // Calculate new population based on available food for growth
+        int newPopulation = foodForGrowth;
+
+        // Update population
+        data.settlementPopulation += newPopulation;
+
+        // Deduct food used for population growth
+        data.settlementFood -= newPopulation * 2;
+        */
     }
+
+
 
     public void CalcReligion(Building data)
     {
@@ -194,6 +222,30 @@ public class BuildingEffectManager : MonoBehaviour
     {
         //Upgrade if requirements are met (population, building count, income, etc)
         //Increase influence, and add the tiles to the settlement
+
+        if((data.settlementPopulation > peoplePerSettlementUpgrade * data.settlementLevel) || (data.settlementBuildings.Count > buildingsPerSettlementUpgrade * data.settlementLevel) && data.settlementLevel <= maxSettlementLevel)
+        {
+            GameObject settlementObj = null;
+
+            data.settlementLevel++;
+
+            for(int i = 0; i < settlementData.Count; i++)
+            {
+                if(settlementData[i] == data)
+                {
+                    settlementObj = settlementObjs[i];
+                    break;
+                }
+            }
+
+            if (settlementObj != null)
+            {
+                SphereCollider sphereCollider = settlementObj.GetComponent<SphereCollider>();
+
+                // Increase the sphere collider's radius based on the settlement level
+                sphereCollider.radius *= data.settlementLevel;
+            }
+        }
     }
 
     public bool isCapital(Building data)

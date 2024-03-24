@@ -7,7 +7,7 @@ using FishNet.Object.Synchronizing;
 using TMPro;
 using UnityEngine.UI;
 
-public class AuctionHouseController : MonoBehaviour
+public class AuctionHouseController : NetworkBehaviour
 {
     //Script Connections
     public UIController uiController;
@@ -35,6 +35,16 @@ public class AuctionHouseController : MonoBehaviour
         playerScript = uiController.playerScript;
     }
 
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        
+        if(!base.IsOwner)
+        {
+            GetComponent<AuctionHouseController>().enabled = false;
+        }
+    }
+
     public void Update()
     {
         totalPages = 1 + cards.Count / cardsPerPage; //So that it still shows there being one page when there areno cards, instead of starting at 0 it starts at 1
@@ -43,6 +53,13 @@ public class AuctionHouseController : MonoBehaviour
 
         currentPageText.text = current.ToString();
         totalPagesText.text = totalPages.ToString();
+    }
+
+    [ServerRpc(RequireOwnership = false)]
+    private void AddCardToAuctionHouse(Card card)
+    {
+        cards.Add(card);
+        Debug.Log("Card added to auction house");
     }
 
     public void Discard() //Adds card from player hand to the auction house
@@ -61,7 +78,7 @@ public class AuctionHouseController : MonoBehaviour
 
             card.originalPlayer = playerScript;
 
-            cards.Add(card);
+            AddCardToAuctionHouse(card);
 
             uiController.RemoveCardElement(playerScript.cardPlacer.currentCardObject);
             playerScript.cardPlacer.HandleDiscard();
@@ -159,6 +176,8 @@ public class AuctionHouseController : MonoBehaviour
     {
         auctionHouse.SetActive(true);
         playerScript.MovementAllowedSetter(false);
+
+        UpdateDisplays();
     }
 
     private void CloseHouse()

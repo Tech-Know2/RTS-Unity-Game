@@ -129,8 +129,7 @@ public class CardPlacer : MonoBehaviour
                 }
             }
 
-            //Remove that card from the data in the UI controller
-            Debug.Log(currentCardObject);
+            //Remove that card from the data in the UI controller;
             playerScript.UIController.RemoveCardElement(currentCardObject);
 
             //Show no card is actively in play

@@ -97,6 +97,8 @@ public class MapController : NetworkBehaviour
                         // Set the hex as a child of the MapController
                         hex.transform.SetParent(this.transform);
 
+                        base.Spawn(hex, base.Owner);
+
                         terrainData.Add(new TileData
                         {
                             position = hexPosition,
@@ -107,8 +109,10 @@ public class MapController : NetworkBehaviour
             }
         }
 
-        RpcReceiveTerrainData(terrainData.ToArray());
+        //RpcReceiveTerrainData(terrainData.ToArray());
     }
+
+    /*
 
     [ObserversRpc(ExcludeOwner = true)]
     private void RpcReceiveTerrainData(TileData[] receivedData)
@@ -127,4 +131,6 @@ public class MapController : NetworkBehaviour
             hex.transform.SetParent(this.transform);
         }
     }
+
+    */
 }
