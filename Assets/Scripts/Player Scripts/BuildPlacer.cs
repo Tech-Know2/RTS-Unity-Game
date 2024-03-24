@@ -134,7 +134,26 @@ public class BuildPlacer : NetworkBehaviour
         previousBuildSlot = null;
 
         HexController hex = tileObject.GetComponent<HexController>();
-        hex.ChangeOccupancy(true);
+
+        if(building.isMovementRelated == true) //For road placements
+        {
+            hex.updateRoadValue(true);
+            hex.ChangeOccupancy(false);
+            hex.changeControlValue(true);
+            hex.ChangeOwnership(playerScript);
+
+        } else if (building.isDefenseRelated == true) //For defense building placements
+        {
+            hex.ChangeOccupancy(true);
+            hex.changeControlValue(true);
+            hex.ChangeOwnership(playerScript);
+
+        } else //For all other building placements
+        {
+            hex.ChangeOccupancy(false);
+            hex.changeControlValue(true);
+            hex.ChangeOwnership(playerScript);
+        }
 
         GameObject newBuilding = Instantiate(buildingObj, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
         
@@ -153,9 +172,19 @@ public class BuildPlacer : NetworkBehaviour
         }
     }
 
-    public bool tileUnderSettlement(GameObject tile)
+    public bool tileUnderSettlement(GameObject tile) //Check if the tile is under your settlement
     {
-        foreach (Building settlement in buildingEffectManager.settlementData)
+        HexController hex = tile.GetComponent<HexController>();
+
+        if(hex.isControlled == true && hex.controlledBy == playerScript)
+        {
+            return true;
+        } else 
+        {
+            return false;
+        }
+
+        /*foreach (Building settlement in buildingEffectManager.settlementData)
         {
             if(settlement.settlementTiles.Contains(tile))
             {
@@ -163,11 +192,22 @@ public class BuildPlacer : NetworkBehaviour
             }
         }
 
-        return false;
+        return false;*/
     }
 
     public bool settlementNotInArea(GameObject tile)
     {
+        HexController hex = tile.GetComponent<HexController>();
+
+        if(hex.isControlled == false)
+        {
+            return true;
+        } else 
+        {
+            return false;
+        }
+
+        /*
         foreach (Player player in playerScript.playerList)
         {
             foreach (Building settlement in player.buildingEffectManager.settlementData)
@@ -178,7 +218,7 @@ public class BuildPlacer : NetworkBehaviour
                 }
             }
         }
-        return true;
+        return true; */
     }
 
     public bool isOccupied(GameObject tile)

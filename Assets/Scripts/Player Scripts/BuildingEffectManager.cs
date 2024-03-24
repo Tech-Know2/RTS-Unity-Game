@@ -210,12 +210,15 @@ public class BuildingEffectManager : MonoBehaviour
             if (tileTags.Contains(collider.tag))
             {
                 GameObject tile = collider.gameObject;
+                HexController hexController = tile.GetComponent<HexController>();
                 
                 // Check to make sure tile is not already apart of the settlement
                 // Check to make sure that the tile is not apart of a settlement already
-                if(!data.settlementTiles.Contains(tile) && tileNotOwned(tile) == true)
+                if(!data.settlementTiles.Contains(tile) && tileNotOwned(tile, hexController) == true)
                 {
                     data.settlementTiles.Add(tile);
+                    hexController.changeControlValue(true);
+                    hexController.ChangeOwnership(playerScript);
                 }
             }
         }
@@ -223,20 +226,16 @@ public class BuildingEffectManager : MonoBehaviour
         return data;
     }
 
-    private bool tileNotOwned(GameObject tile)
+    private bool tileNotOwned(GameObject tile, HexController hexController)
     {
-        foreach (Player player in playerScript.playerList)
+        if(hexController.isControlled == true)
         {
-            foreach (Building settlement in player.buildingEffectManager.settlementData)
-            {
-                if(settlement.settlementTiles.Contains(tile))
-                {
-                    return true;
-                }
-            }
-        }
+            return false;
 
-        return false;
+        } else 
+        {
+            return true;
+        }
     }
     
     public void UpgradeSettlement(Building data)

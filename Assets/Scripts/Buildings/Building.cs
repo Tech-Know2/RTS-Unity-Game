@@ -47,6 +47,8 @@ public class Building : ScriptableObject
     public List<Object> producableObjects = new List<Object>();
 
     //Bools to check Building Identity
+    public bool isMovementRelated;
+    public bool isDefenseRelated;
     public bool isReligiousTrainingRelated;
     public bool isPath;
     public bool isDefense;
