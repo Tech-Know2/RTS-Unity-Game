@@ -206,16 +206,37 @@ public class BuildingEffectManager : MonoBehaviour
         // Iterate through all colliders and filter objects with desired tags
         foreach (Collider collider in colliders)
         {
-            // Check if the collider's tag is one of the desired tags
+            // Check to see if colliders match
             if (tileTags.Contains(collider.tag))
             {
                 GameObject tile = collider.gameObject;
-
-                data.settlementTiles.Add(tile);
+                
+                // Check to make sure tile is not already apart of the settlement
+                // Check to make sure that the tile is not apart of a settlement already
+                if(!data.settlementTiles.Contains(tile) && tileNotOwned(tile) == true)
+                {
+                    data.settlementTiles.Add(tile);
+                }
             }
         }
 
         return data;
+    }
+
+    private bool tileNotOwned(GameObject tile)
+    {
+        foreach (Player player in playerScript.playerList)
+        {
+            foreach (Building settlement in player.buildingEffectManager.settlementData)
+            {
+                if(settlement.settlementTiles.Contains(tile))
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
     
     public void UpgradeSettlement(Building data)
@@ -244,6 +265,8 @@ public class BuildingEffectManager : MonoBehaviour
 
                 // Increase the sphere collider's radius based on the settlement level
                 sphereCollider.radius *= data.settlementLevel;
+
+                GetSettlementTiles(settlementObj, data);
             }
         }
     }

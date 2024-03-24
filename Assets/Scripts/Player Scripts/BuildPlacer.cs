@@ -168,14 +168,16 @@ public class BuildPlacer : NetworkBehaviour
 
     public bool settlementNotInArea(GameObject tile)
     {
-        foreach (Building settlement in buildingEffectManager.settlementData)
+        foreach (Player player in playerScript.playerList)
         {
-            if(settlement.settlementTiles.Contains(tile))
+            foreach (Building settlement in player.buildingEffectManager.settlementData)
             {
-                return false;
+                if(settlement.settlementTiles.Contains(tile))
+                {
+                    return false;
+                }
             }
         }
-
         return true;
     }
 
