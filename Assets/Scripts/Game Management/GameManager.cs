@@ -23,7 +23,6 @@ public class GameManager : NetworkBehaviour
 
     //Client Specific Vars and Data Collection
     public int playerElement;
-    public int interval = 0;
     public int eraLength = 30;
     public int gameEra = 1;
     public int yearsPerInterval = 25;
@@ -85,10 +84,10 @@ public class GameManager : NetworkBehaviour
 
     public void UpdateEra()
     {
-        if(interval < eraLength)
+        if(Player.interval < eraLength)
         {
             gameEra = 1;
-        } else if (interval < eraLength * 2)
+        } else if (Player.interval < eraLength * 2)
         {
             gameEra = 2;
         } else 
@@ -99,7 +98,7 @@ public class GameManager : NetworkBehaviour
 
     public int CalcYear()
     {
-        return interval * yearsPerInterval;
+        return Player.interval * yearsPerInterval;
     }
 
     public int GetEra()

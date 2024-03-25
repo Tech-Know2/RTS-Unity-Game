@@ -69,8 +69,7 @@ public class Player : NetworkBehaviour
     //etc
 
     //Networking Vars
-    [SyncVar]
-    public int interval = 0;
+    public static int interval = 0;
     public float intervalSeconds = 30f;
 
     [SyncObject]
@@ -125,7 +124,6 @@ public class Player : NetworkBehaviour
         Debug.Log("Passed Interval from Server" + passedInterval);
         Debug.Log("Game Manager" + gameManager);
 
-        gameManager.interval = passedInterval;
         gameManager.UpdateEra();
         gameManager.playerTechPoints++;
 
