@@ -35,7 +35,7 @@ public class BootstrapManager : MonoBehaviour
 
     public static void CreateLobby()
     {
-        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, 4);
+        SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypePublic, 4); //4 is the number of people who can join
     }
 
     private void OnLobbyCreated(LobbyCreated_t callback)

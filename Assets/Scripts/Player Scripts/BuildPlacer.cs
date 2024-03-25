@@ -158,7 +158,7 @@ public class BuildPlacer : NetworkBehaviour
 
             } else //For all other building placements
             {
-                hex.ChangeOccupancy(false);
+                hex.ChangeOccupancy(true);
                 hex.changeControlValue(true);
                 hex.ChangeOwnership(playerScript);
             }

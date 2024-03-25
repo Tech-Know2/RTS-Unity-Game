@@ -83,6 +83,7 @@ public class Player : NetworkBehaviour
         if (base.IsOwner)
         {
             StartCoroutine(MoveToDestinationScene(multiplayerScene));
+            CatchUp();
         }
         else
         {
@@ -101,9 +102,19 @@ public class Player : NetworkBehaviour
         {
             yield return new WaitForSeconds(intervalSeconds);
 
-            interval += 1;
+            interval++;
 
             DealWithIntervalChange(interval);
+        }
+    }
+
+    //Handle when a new player joins, make sure they get the appropriate amount of tech points if they join later.
+    [ServerRpc]
+    public void CatchUp()
+    {
+        if(interval != 0)
+        {
+            gameManager.playerTechPoints = 1 * interval;
         }
     }
 
@@ -111,6 +122,9 @@ public class Player : NetworkBehaviour
     [ObserversRpc]
     public void DealWithIntervalChange(int passedInterval)
     {
+        Debug.Log("Passed Interval from Server" + passedInterval);
+        Debug.Log("Game Manager" + gameManager);
+
         gameManager.interval = passedInterval;
         gameManager.UpdateEra();
         gameManager.playerTechPoints++;
@@ -210,7 +224,7 @@ public class Player : NetworkBehaviour
         UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(gameObject, destinationScene);
 
         // Now that the GameObject is in the new scene, find the camera and set it up
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.2f);
         SetupCamera();
         WakeUpScripts();
     }
