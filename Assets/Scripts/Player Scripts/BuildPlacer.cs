@@ -121,54 +121,63 @@ public class BuildPlacer : NetworkBehaviour
         {
             playerScript.notificationController.CreateNotification("Can't Build There", "This building can not be built on that tile, please try again");
         }
+
+        Debug.Log("Build Check 1:" + building + " building data");
+        Debug.Log("Build Check 2:" + buildingDataHolder.buildingObject + " building object");
+        Debug.Log("Build Check 3:" + tileObject + " tile object");
+        Debug.Log("Build Check 4:" + yHeight + " yheight of placement");
+        Debug.Log("Build Check 5:" + playerScript + " playerScript");
     }
 
     [ServerRpc]
     private void SpawnBuilding(Building building, GameObject buildingObj, GameObject tileObject, float yHeight, Player player)
     {
-        Debug.Log(currentBuildSlot);
-        player.UIController.RemoveBuildElement(currentBuildSlot);
-
-        ScaleDown(currentBuildSlot);
-        currentBuildSlot = null;
-        previousBuildSlot = null;
-
-        HexController hex = tileObject.GetComponent<HexController>();
-
-        if(building.isMovementRelated == true) //For road placements
+        if (tileObject != null)
         {
-            hex.updateRoadValue(true);
-            hex.ChangeOccupancy(false);
-            hex.changeControlValue(true);
-            hex.ChangeOwnership(playerScript);
+            Debug.Log(currentBuildSlot);
+            player.UIController.RemoveBuildElement(currentBuildSlot);
 
-        } else if (building.isDefenseRelated == true) //For defense building placements
-        {
-            hex.ChangeOccupancy(true);
-            hex.changeControlValue(true);
-            hex.ChangeOwnership(playerScript);
+            ScaleDown(currentBuildSlot);
+            currentBuildSlot = null;
+            previousBuildSlot = null;
 
-        } else //For all other building placements
-        {
-            hex.ChangeOccupancy(false);
-            hex.changeControlValue(true);
-            hex.ChangeOwnership(playerScript);
-        }
+            HexController hex = tileObject.GetComponent<HexController>();
 
-        GameObject newBuilding = Instantiate(buildingObj, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
-        
-        //Have it be spawned on all clients pov
-        base.Spawn(newBuilding, base.Owner);
+            if(building.isMovementRelated == true) //For road placements
+            {
+                hex.updateRoadValue(true);
+                hex.ChangeOccupancy(false);
+                hex.changeControlValue(true);
+                hex.ChangeOwnership(playerScript);
+
+            } else if (building.isDefenseRelated == true) //For defense building placements
+            {
+                hex.ChangeOccupancy(true);
+                hex.changeControlValue(true);
+                hex.ChangeOwnership(playerScript);
+
+            } else //For all other building placements
+            {
+                hex.ChangeOccupancy(false);
+                hex.changeControlValue(true);
+                hex.ChangeOwnership(playerScript);
+            }
+
+            GameObject newBuilding = Instantiate(buildingObj, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
             
-        //Parent to the player
-        player.ParentToMe(newBuilding);
+            //Have it be spawned on all clients pov
+            base.Spawn(newBuilding, base.Owner);
+                
+            //Parent to the player
+            player.ParentToMe(newBuilding);
 
-        if(building.isASettlement == true)
-        {
-            player.buildingEffectManager.AddSettlement(newBuilding);
-        } else 
-        {
-            player.buildingEffectManager.AddBuilding(newBuilding, tileObject);
+            if(building.isASettlement == true)
+            {
+                player.buildingEffectManager.AddSettlement(newBuilding);
+            } else 
+            {
+                player.buildingEffectManager.AddBuilding(newBuilding, tileObject);
+            }
         }
     }
 

@@ -71,7 +71,6 @@ public class Player : NetworkBehaviour
     //Networking Vars
     [SyncVar]
     public int interval = 0;
-    private int currentInterval = 0;
     public float intervalSeconds = 30f;
 
     [SyncObject]
@@ -103,13 +102,16 @@ public class Player : NetworkBehaviour
             yield return new WaitForSeconds(intervalSeconds);
 
             interval += 1;
+
+            DealWithIntervalChange(interval);
         }
     }
 
     //Control the intervals
-    public void DealWithIntervalChange()
+    [ObserversRpc]
+    public void DealWithIntervalChange(int passedInterval)
     {
-        gameManager.interval = currentInterval;
+        gameManager.interval = passedInterval;
         gameManager.UpdateEra();
         gameManager.playerTechPoints++;
 
@@ -122,7 +124,7 @@ public class Player : NetworkBehaviour
         }
         
 
-        Debug.Log("Interval: " + currentInterval);
+        Debug.Log("Interval: " + passedInterval);
     }
 
     public void GetCards()
@@ -152,8 +154,6 @@ public class Player : NetworkBehaviour
         {
             Debug.Log("Player added to player list");
         }
-
-        currentInterval = interval;
 
         GameObject newObj = Instantiate(playerObject, new Vector3(0, 0, 0), Quaternion.identity);
 
@@ -276,13 +276,6 @@ public class Player : NetworkBehaviour
         }
 
         transform.position = cameraTransform.position;
-
-        if (interval == (currentInterval + 1))
-        {
-            currentInterval = interval;
-
-            DealWithIntervalChange();
-        }
     }
 
     void HandelMouseInput()
