@@ -71,6 +71,7 @@ public class Player : NetworkBehaviour
     //Networking Vars
     public static int interval = 0;
     public float intervalSeconds = 30f;
+    public static bool startGame = false;
 
     [SyncObject]
     public readonly SyncList<Player> playerList = new SyncList<Player>();
@@ -97,6 +98,16 @@ public class Player : NetworkBehaviour
 
     IEnumerator IncrementNumberEveryIntervalSeconds()
     {
+        // Wait for startGame to become true
+        while (!startGame)
+        {
+            yield return null;
+        }
+
+        // Game has started
+        Debug.Log("Game Started");
+
+        // Main loop to increment interval
         while (true)
         {
             yield return new WaitForSeconds(intervalSeconds);
@@ -106,6 +117,7 @@ public class Player : NetworkBehaviour
             DealWithIntervalChange(interval);
         }
     }
+
 
     //Handle when a new player joins, make sure they get the appropriate amount of tech points if they join later.
     [ServerRpc]

@@ -121,12 +121,6 @@ public class BuildPlacer : NetworkBehaviour
         {
             playerScript.notificationController.CreateNotification("Can't Build There", "This building can not be built on that tile, please try again");
         }
-
-        Debug.Log("Build Check 1:" + building + " building data");
-        Debug.Log("Build Check 2:" + buildingDataHolder.buildingObject + " building object");
-        Debug.Log("Build Check 3:" + tileObject + " tile object");
-        Debug.Log("Build Check 4:" + yHeight + " yheight of placement");
-        Debug.Log("Build Check 5:" + playerScript + " playerScript");
     }
 
     [ServerRpc]
@@ -164,12 +158,15 @@ public class BuildPlacer : NetworkBehaviour
             }
 
             GameObject newBuilding = Instantiate(buildingObj, new Vector3(tileObject.transform.position.x, yHeight, tileObject.transform.position.z), tileObject.transform.rotation);
+
+            //Parent to the player
+            if(building.requiresASettlement != true)
+            {
+                player.ParentToMe(newBuilding);
+            }
             
             //Have it be spawned on all clients pov
             base.Spawn(newBuilding, base.Owner);
-                
-            //Parent to the player
-            player.ParentToMe(newBuilding);
 
             if(building.isASettlement == true)
             {

@@ -8,15 +8,11 @@ public class BuildData : NetworkBehaviour
 {
     public Building buildData;
 
-    [ServerRpc]
-    public void SetBuildData(Building data)
-    {
-        buildData = data;
-    }
-
-    [ServerRpc]
+    [ServerRpc(RequireOwnership = false)]
     public void UpdateBuildData(Building data)
     {
+        Debug.Log("Update Build Data Called");
+
         buildData = data;
     }
 

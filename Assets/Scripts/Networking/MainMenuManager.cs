@@ -70,5 +70,7 @@ public class MainMenuManager : MonoBehaviour
     {
         string[] scenesToClose = new string[] { "Main Menu" };
         BootstrapNetworkManager.ChangeNetworkScene("Multiplayer Game", scenesToClose);
+
+        Player.startGame = true;
     }
 }

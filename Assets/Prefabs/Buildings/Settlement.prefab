@@ -146,7 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 14196067e6ff1534b9ee07ebbcb54dcb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _componentIndexCache: 255
+  _componentIndexCache: 0
   _addedNetworkObject: {fileID: 0}
   _networkObjectCache: {fileID: 0}
   buildData: {fileID: 11400000, guid: c52a5b1544b8de54a9175ccba4d945a2, type: 2}

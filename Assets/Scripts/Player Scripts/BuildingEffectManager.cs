@@ -15,7 +15,6 @@ public class BuildingEffectManager : MonoBehaviour
 
     public List<Building> buildingData = new List<Building>();
     public List<GameObject> buildingObjs = new List<GameObject>();
-    public List<BuildData> buildingServerData = new List<BuildData>();
 
     //Player Empire Vars
     private Empire playerEmpire;
@@ -42,26 +41,33 @@ public class BuildingEffectManager : MonoBehaviour
         buildingObjs.Add(obj);
 
         //Manipulate scriptable object up here, then reasign down there
-        if(data.requiresASettlement == true)
+        if (data.requiresASettlement)
         {
+            int index = 0;
+
             foreach (Building settlement in settlementData)
             {
-                if(settlement.settlementTiles.Contains(tile))
+                if (settlement.settlementTiles.Contains(tile))
                 {
                     data.buildingsParentSettlement = settlement;
+
+                     // Access the settlement object's transform using index
+                    Transform settlementTransform = settlementObjs[index].transform;
+                    obj.transform.SetParent(settlementTransform);
+
+                    break;
                 }
+
+                index++;
             }
         }
 
         //Reasign the data to the objects
         BuildData objBuildData = obj.GetComponent<BuildData>();
-        objBuildData.buildData = data;
-
-        //Store the data on the server/client side of things
-        buildingServerData.Add(objBuildData);
+        objBuildData.UpdateBuildData(data);
 
         //Do building effects
-        CreateBuilding(data, objBuildData);
+        CreateBuilding(data);
 
         playerScript.notificationController.CreateNotification("Building Built", data.buildingName + " has been built in your empire");
     }
@@ -80,16 +86,15 @@ public class BuildingEffectManager : MonoBehaviour
         settlementData.Add(data);
         settlementObjs.Add(obj);
 
-        data.settlementName = playerScript.empireManager.nameCreator.GenerateCityName();
-
-        playerScript.notificationController.CreateNotification("Settlement Founded", data.settlementName + " has been added to your empire");
-
         //Reasign the data to the objects
         BuildData objBuildData = obj.GetComponent<BuildData>();
-        objBuildData.SetBuildData(data);
+        objBuildData.buildData = data;
 
-        //Update on the server
-        buildingServerData.Add(objBuildData);
+        data.settlementName = playerScript.empireManager.nameCreator.GenerateCityName();
+
+        objBuildData.UpdateBuildData(data);
+
+        playerScript.notificationController.CreateNotification("Settlement Founded", data.settlementName + " has been added to your empire");
     }
 
     public void IntervalEffects()
@@ -102,13 +107,10 @@ public class BuildingEffectManager : MonoBehaviour
     {
         foreach (Building building in buildingData)
         {
-            int index = buildingData.IndexOf(building);
-            BuildData buildData = buildingServerData[index];
-
-            BuildingUpKeep(building, buildData);
-            BuildingProduction(building, buildData);
-            BuildingProduction(building, buildData);
-            BuildingTraining(building, buildData);
+            BuildingUpKeep(building);
+            BuildingProduction(building);
+            BuildingProduction(building);
+            BuildingTraining(building);
         }
     }
 
@@ -116,23 +118,20 @@ public class BuildingEffectManager : MonoBehaviour
     {
         foreach (Building settlement in settlementData)
         {
-            int index = buildingData.IndexOf(settlement);
-            BuildData buildData = buildingServerData[index];
-
-            UpdatePopandFood(settlement, buildData);
-            CalcReligion(settlement, buildData);
-            UpgradeSettlement(settlement, buildData);
-            SettlementIncome(settlement, buildData);
+            UpdatePopandFood(settlement);
+            CalcReligion(settlement);
+            UpgradeSettlement(settlement);
+            SettlementIncome(settlement);
         }
     }
 
-    public void SettlementIncome(Building data, BuildData buildData)
+    public void SettlementIncome(Building data)
     {
         playerScript.gameManager.playerGold += data.settlementPopulation;
     }
 
     //Functions to calculate and manage settlement needs
-    public void UpdatePopandFood(Building data, BuildData buildData)
+    public void UpdatePopandFood(Building data)
     {
         /*int foodConsumed = data.settlementPopulation * 2; // 1 pop consumes 2 food
 
@@ -159,7 +158,9 @@ public class BuildingEffectManager : MonoBehaviour
         */
     }
 
-    public void CalcReligion(Building data, BuildData buildData)
+
+
+    public void CalcReligion(Building data)
     {
         if((data.settlementReligiousFollowers.Count != 0) || (data.settlementReligions.Count != 0))
         {
@@ -205,9 +206,6 @@ public class BuildingEffectManager : MonoBehaviour
             }
 
             data.mainReligion = data.settlementReligions[currentMaxElement];
-
-            //Update values on the server side of things
-            buildData.SetBuildData(data);
         }
     }
 
@@ -252,7 +250,7 @@ public class BuildingEffectManager : MonoBehaviour
         }
     }
     
-    public void UpgradeSettlement(Building data, BuildData buildData)
+    public void UpgradeSettlement(Building data)
     {
         //Upgrade if requirements are met (population, building count, income, etc)
         //Increase influence, and add the tiles to the settlement
@@ -282,9 +280,6 @@ public class BuildingEffectManager : MonoBehaviour
                 GetSettlementTiles(settlementObj, data);
             }
         }
-
-        //Update values on the server side of things
-        buildData.SetBuildData(data);
     }
 
     public bool isCapital(Building data)
@@ -298,31 +293,17 @@ public class BuildingEffectManager : MonoBehaviour
     }
 
     //Functions to calculate and manage building needs
-    public void CreateBuilding(Building data, BuildData buildData) //Does costs, production, assigning, etc
+    public void CreateBuilding(Building data) //Does costs, production, assigning, etc
     {
         if(data.requiresASettlement == true)
         {
             Building settlement = data.buildingsParentSettlement;
 
             settlement.settlementPopulation -= data.peopleInitialCost;
-
-            //Update the settlement data
-            for(int i = 0; i < buildingServerData.Count; i++)
-            {
-                if(settlement == settlementData[i])
-                {
-                    //Update the data on the server side of things
-                    buildingServerData[i].SetBuildData(settlement);
-                    break;
-                }
-            }
         }
-
-        //Update values on the server side of things
-        buildData.SetBuildData(data);
     }
 
-    public void BuildingUpKeep(Building data, BuildData buildData)
+    public void BuildingUpKeep(Building data)
     {
         if(data.buildingsParentSettlement != null)
         {
@@ -332,24 +313,13 @@ public class BuildingEffectManager : MonoBehaviour
             settlement.settlementPopulation -= data.peopleUpKeep;
             settlement.settlementFood -= data.foodUpkeep;
 
-            //Update the settlement data
-            for(int i = 0; i < buildingServerData.Count; i++)
-            {
-                if(settlement == settlementData[i])
-                {
-                    //Update the data on the server side of things
-                    buildingServerData[i].SetBuildData(settlement);
-                    break;
-                }
-            }
-
         } else 
         {
             playerScript.gameManager.playerGold -= data.goldUpKeep;
         } 
     }
 
-    public void BuildingProduction(Building data, BuildData buildData)
+    public void BuildingProduction(Building data)
     {
         if(data.buildingsParentSettlement != null)
         {
@@ -365,17 +335,6 @@ public class BuildingEffectManager : MonoBehaviour
                 settlement.settlementObjectInventory.Add(item);
             }
 
-            //Update the settlement data
-            for(int i = 0; i < buildingServerData.Count; i++)
-            {
-                if(settlement == settlementData[i])
-                {
-                    //Update the data on the server side of things
-                    buildingServerData[i].SetBuildData(settlement);
-                    break;
-                }
-            }
-
         } else 
         {
             playerScript.gameManager.playerGold += data.goldProduction;
@@ -383,7 +342,7 @@ public class BuildingEffectManager : MonoBehaviour
         }
     }
 
-    public void BuildingTraining(Building data, BuildData buildData) //Might need this, will work on unit creation later
+    public void BuildingTraining(Building data) //Might need this, will work on unit creation later
     {
         //Create troops each interval
     }
