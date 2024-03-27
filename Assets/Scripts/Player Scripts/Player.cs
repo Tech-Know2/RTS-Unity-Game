@@ -72,6 +72,7 @@ public class Player : NetworkBehaviour
     public static int interval = 0;
     public float intervalSeconds = 30f;
     public static bool startGame = false;
+    public static int playersCounting = 0;
 
     [SyncObject]
     public readonly SyncList<Player> playerList = new SyncList<Player>();
@@ -92,8 +93,12 @@ public class Player : NetworkBehaviour
         if(base.IsServer)
         {
             Debug.Log("Is Server" + this);
+            playersCounting++;
             
-            StartCoroutine(IncrementNumberEveryIntervalSeconds());
+            if(playersCounting == 1)
+            {
+                StartCoroutine(IncrementNumberEveryIntervalSeconds());
+            }
         }
     }
 

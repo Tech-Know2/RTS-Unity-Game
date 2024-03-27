@@ -84,6 +84,8 @@ public class GameManager : NetworkBehaviour
 
     public void UpdateEra()
     {
+        Debug.Log("Game Manager Update Era Called");
+
         if(Player.interval < eraLength)
         {
             gameEra = 1;
@@ -98,6 +100,8 @@ public class GameManager : NetworkBehaviour
 
     public int CalcYear()
     {
+        Debug.Log("Calc Year Called");
+
         return Player.interval * yearsPerInterval;
     }
 
