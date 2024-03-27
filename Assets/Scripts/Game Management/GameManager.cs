@@ -100,8 +100,6 @@ public class GameManager : NetworkBehaviour
 
     public int CalcYear()
     {
-        Debug.Log("Calc Year Called");
-
         return Player.interval * yearsPerInterval;
     }
 
