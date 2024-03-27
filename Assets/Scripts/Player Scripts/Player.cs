@@ -74,9 +74,6 @@ public class Player : NetworkBehaviour
     public static bool startGame = false;
     public static int playersCounting = 0;
 
-    [SyncObject]
-    public readonly SyncList<Player> playerList = new SyncList<Player>();
-
     public override void OnStartClient()
     {
         base.OnStartClient();
@@ -166,13 +163,6 @@ public class Player : NetworkBehaviour
     {
         player = GetComponent<Player>();
         cardDealer = GetComponent<CardDealer>();
-
-        playerList.Add(this);
-
-        if(playerList.Count > 0)
-        {
-            Debug.Log("Player added to player list");
-        }
 
         GameObject newObj = Instantiate(playerObject, new Vector3(0, 0, 0), Quaternion.identity);
 

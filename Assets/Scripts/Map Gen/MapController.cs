@@ -97,7 +97,7 @@ public class MapController : NetworkBehaviour
                         // Set the hex as a child of the MapController
                         hex.transform.SetParent(this.transform);
 
-                        SpawnTile(hex);
+                        base.Spawn(hex); //Add ", base.Owner" if the objects need to have an owner
 
                         terrainData.Add(new TileData
                         {
@@ -110,11 +110,6 @@ public class MapController : NetworkBehaviour
         }
 
         //RpcReceiveTerrainData(terrainData.ToArray());
-    }
-
-    public void SpawnTile(GameObject hex)
-    {
-        base.Spawn(hex, base.Owner); //Add ", base.Owner" if the objects need to have an owner
     }
 
     /*
