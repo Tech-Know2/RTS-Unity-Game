@@ -83,7 +83,6 @@ public class Player : NetworkBehaviour
         if (base.IsOwner)
         {
             StartCoroutine(MoveToDestinationScene(multiplayerScene));
-            CatchUp();
         }
         else
         {
@@ -92,6 +91,8 @@ public class Player : NetworkBehaviour
 
         if(base.IsServer)
         {
+            Debug.Log("Is Server" + this);
+            
             StartCoroutine(IncrementNumberEveryIntervalSeconds());
         }
     }
@@ -118,22 +119,11 @@ public class Player : NetworkBehaviour
         }
     }
 
-
-    //Handle when a new player joins, make sure they get the appropriate amount of tech points if they join later.
-    [ServerRpc]
-    public void CatchUp()
-    {
-        if(interval != 0)
-        {
-            gameManager.playerTechPoints = 1 * interval;
-        }
-    }
-
     //Control the intervals
     [ObserversRpc]
     public void DealWithIntervalChange(int passedInterval)
     {
-        Debug.Log("Passed Interval from Server" + passedInterval);
+        Debug.Log("Passed Interval from Server:" + passedInterval);
         Debug.Log("Game Manager" + gameManager);
 
         gameManager.UpdateEra();
@@ -205,13 +195,13 @@ public class Player : NetworkBehaviour
         //Connect the Game Manager to the Player
         gameManager = this.GetComponent<GameManager>();
 
-        gameManager.ConnectToPlayer(player);
+        gameManager.ConnectToPlayer(this);
 
         //Connect the UI Controller to the CardDealer
         cardDealer.Connect(UIController, player);
 
         //Get the UI Controller to make its connections
-        UIController.ConnectToPlayer(player, gameManager, cardDealer);
+        UIController.ConnectToPlayer(this, gameManager, cardDealer);
 
         PlayerEmpireSetup();
     }
