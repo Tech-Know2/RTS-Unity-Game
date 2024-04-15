@@ -197,8 +197,6 @@ public class UIController : MonoBehaviour
         // Get the open slot index
         int openSlot = slotNum;
 
-        Debug.Log("Display Card method called" + card);
-
         //Assing the player to the card for multiplayer features
         card.originalPlayer = playerScript;
         
@@ -226,9 +224,7 @@ public class UIController : MonoBehaviour
 
     private void ResetDisplay(int slotNum)
     {
-        Debug.Log("Card Slot Num: " + slotNum);
-
-        //Gte access to the right digital diplay
+        //Get access to the right digital diplay
         GameObject cardSlot = cardSlots[slotNum];
 
         //Reset the values in the array for cards

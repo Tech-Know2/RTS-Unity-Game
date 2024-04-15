@@ -6,9 +6,10 @@ using FishNet.Object.Synchronizing;
 
 public class BuildData : NetworkBehaviour
 {
+    [SyncVar]
     public Building buildData;
 
-    [ServerRpc(RequireOwnership = false)]
+    //[ServerRpc(RequireOwnership = false)]
     public void UpdateBuildData(Building data)
     {
         Debug.Log("Update Build Data Called");

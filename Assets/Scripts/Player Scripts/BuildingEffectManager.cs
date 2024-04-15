@@ -14,6 +14,7 @@ public class BuildingEffectManager : MonoBehaviour
     public List<string> tileTags = new List<string>();
 
     public List<Building> buildingData = new List<Building>();
+    public List<BuildData> buildDataComps = new List<BuildData>();
     public List<GameObject> buildingObjs = new List<GameObject>();
 
     //Player Empire Vars
@@ -39,6 +40,7 @@ public class BuildingEffectManager : MonoBehaviour
         //Store the data and the objects
         buildingData.Add(data);
         buildingObjs.Add(obj);
+        buildDataComps.Add(obj.GetComponent<BuildData>());
 
         //Manipulate scriptable object up here, then reasign down there
         if (data.requiresASettlement)
@@ -64,12 +66,13 @@ public class BuildingEffectManager : MonoBehaviour
 
         //Reasign the data to the objects
         BuildData objBuildData = obj.GetComponent<BuildData>();
-        objBuildData.UpdateBuildData(data);
 
         //Do building effects
         CreateBuilding(data);
 
         playerScript.notificationController.CreateNotification("Building Built", data.buildingName + " has been built in your empire");
+
+        SyncData(data, objBuildData);
     }
 
     public void AddSettlement(GameObject obj)
@@ -85,16 +88,16 @@ public class BuildingEffectManager : MonoBehaviour
         //Store the data and the objects
         settlementData.Add(data);
         settlementObjs.Add(obj);
+        buildDataComps.Add(obj.GetComponent<BuildData>());
 
         //Reasign the data to the objects
         BuildData objBuildData = obj.GetComponent<BuildData>();
-        objBuildData.buildData = data;
 
         data.settlementName = playerScript.empireManager.nameCreator.GenerateCityName();
 
-        objBuildData.UpdateBuildData(data);
-
         playerScript.notificationController.CreateNotification("Settlement Founded", data.settlementName + " has been added to your empire");
+
+        SyncData(data, objBuildData);
     }
 
     public void IntervalEffects()
@@ -111,6 +114,7 @@ public class BuildingEffectManager : MonoBehaviour
             BuildingProduction(building);
             BuildingProduction(building);
             BuildingTraining(building);
+            SyncData(building, FindBuildData(building));
         }
     }
 
@@ -124,6 +128,39 @@ public class BuildingEffectManager : MonoBehaviour
             SettlementIncome(settlement);
         }
     }
+
+    public BuildData FindBuildData(Building building)
+    {
+        // FindIndex returns the index of the first element that matches the condition
+        int index = buildDataComps.FindIndex(buildData => building == buildData.buildData);
+
+        if (index != -1)
+        {
+            // If the element is found, return the corresponding BuildData
+            return buildDataComps[index];
+        }
+        else
+        {
+            // If the element is not found, return null or handle the case accordingly
+            Debug.Log("No building data element found matching the passed one in the sync var script");
+            return null;
+        }
+    }
+
+    public void SyncData(Building building, BuildData buildData)
+    {
+        // Check if either building or buildData is null before proceeding
+        if (building == null || buildData == null)
+        {
+            // Log a warning or handle the null case appropriately
+            Debug.LogWarning("SyncData: Building or BuildData is null.");
+            return;
+        }
+
+        // Now you can safely access properties or methods of building and buildData
+        buildData.UpdateBuildData(building);
+    }
+
 
     public void SettlementIncome(Building data)
     {

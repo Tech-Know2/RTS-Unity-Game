@@ -29,6 +29,14 @@ public class AuctionHouseController : NetworkBehaviour
     //Other UI Objs
     public GameObject mainUI;
     public GameObject auctionHouse;
+    public GameObject pageParentObj;
+    public GameObject CardPreviewObj;
+
+    //Vars for card purchasing
+    public GameObject cardViewingParentObj;
+    public TextMeshProUGUI cardPreviewName, cardPreviewDescription, cardPreviewPrice, cardPreviewOriginalOwner;
+    private Card previewingCard;
+    private ACDisplay previewingACDisplay;
 
     public void ConnectToPlayer()
     {
@@ -175,6 +183,8 @@ public class AuctionHouseController : NetworkBehaviour
     private void OpenHouse()
     {
         auctionHouse.SetActive(true);
+        CardPreviewObj.SetActive(true);
+        pageParentObj.SetActive(true);
         playerScript.MovementAllowedSetter(false);
 
         UpdateDisplays();
@@ -184,11 +194,39 @@ public class AuctionHouseController : NetworkBehaviour
     {
         auctionHouse.SetActive(false);
         playerScript.MovementAllowedSetter(true);
+        CardPreviewObj.SetActive(true);
+        pageParentObj.SetActive(true);
+    }
+
+    public void viewCard(Card card, ACDisplay acDisplay)
+    {
+        Debug.Log("Viewing card now");
+        Debug.Log("Passed Card: " + card);
+        Debug.Log("Passed ACDisplay: " + acDisplay);
+
+        CardPreviewObj.SetActive(false);
+        pageParentObj.SetActive(false);
+        cardViewingParentObj.SetActive(true);
+
+        previewingCard = card;
+        previewingACDisplay = acDisplay;
+
+        cardPreviewName.text = card.cardName;
+        cardPreviewDescription.text = card.description;
+        cardPreviewPrice.text = calculateCardPrice(card, playerScript).ToString();
+        cardPreviewOriginalOwner.text = card.originalPlayer.playerEmpire.empireName;
+    }
+
+    public int calculateCardPrice(Card card, Player previewingPlayer)
+    {
+        //Take into account player relations(alliances, agreements, sanctions. trade, etc)
+
+        return card.goldCost;
     }
 
     public void PurchaseCard()
     {
-        int purchaseCost = 75 /* ( sanctions + alliances, etc) */; //Work on later
+        int purchaseCost = calculateCardPrice(previewingCard, playerScript);
 
         uiController.playerScript.gameManager.playerGold -= purchaseCost;
 
